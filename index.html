@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Revitalised Medicine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,1190 +9,900 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --navy: #2d1f4e;
-      --deep: #3b2860;
-      --mid: #5a3e8a;
-      --accent: #8b5cf6;
-      --teal: #c4b5fd;
-      --light: #f5f3ff;
-      --white: #ffffff;
-      --text: #2d1f4e;
-      --muted: #7c6fa0;
-      --border: rgba(139, 92, 246, 0.15);
+      --navy: #2d1f4e; --accent: #8b5cf6; --lilac: #c4b5fd;
+      --light: #f5f3ff; --white: #fff; --text: #2d1f4e;
+      --muted: #7c6fa0; --border: rgba(139,92,246,0.15);
       --serif: 'Cormorant Garamond', Georgia, serif;
       --sans: 'DM Sans', sans-serif;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--white); color: var(--text); overflow-x: hidden; }
 
-    body {
-      font-family: var(--sans);
-      background: var(--white);
-      color: var(--text);
-      overflow-x: hidden;
-    }
+    /* ── PAGE SECTIONS ── */
+    .page { display: none; }
+    .page.active { display: block; }
 
-    /* ── NAVBAR ── */
+    /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      background: rgba(10, 22, 40, 0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(58,123,213,0.2);
-      padding: 0 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(45,31,78,0.97); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(139,92,246,0.2);
+      padding: 0 2.5rem; display: flex; align-items: center;
+      justify-content: space-between; height: 64px;
     }
-
-    .nav-logo {
-      font-family: var(--serif);
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--white);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .nav-logo { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: #fff; text-decoration: none; cursor: pointer; }
+    .nav-logo span { color: var(--lilac); }
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; }
+    .nav-links > li { position: relative; }
+    .nav-links > li > a, .nav-links > li > button {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(255,255,255,0.75); text-decoration: none; padding: 0.5rem 0.7rem;
+      border: none; background: none; cursor: pointer; border-radius: 4px;
+      transition: color 0.2s, background 0.2s; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;
     }
-
-    .nav-logo span {
-      color: var(--teal);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      list-style: none;
-    }
-
-    .nav-links > li {
-      position: relative;
-    }
-
-    .nav-links > li > a,
-    .nav-links > li > button {
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      padding: 0.5rem 0.75rem;
-      border: none;
-      background: none;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: color 0.2s, background 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      white-space: nowrap;
-    }
-
-    .nav-links > li > a:hover,
-    .nav-links > li > button:hover,
-    .nav-links > li.active > a {
-      color: var(--white);
-      background: rgba(58,123,213,0.15);
-    }
-
-    .nav-links > li > button svg {
-      width: 10px; height: 10px;
-      transition: transform 0.2s;
-      opacity: 0.6;
-    }
-
-    .nav-links > li:hover > button svg {
-      transform: rotate(180deg);
-    }
-
-    /* Dropdown */
+    .nav-links > li > a:hover, .nav-links > li > button:hover,
+    .nav-links > li > a.active-link { color: #fff; background: rgba(139,92,246,0.15); }
+    .nav-links > li > button svg { width: 10px; height: 10px; transition: transform 0.2s; opacity: 0.6; }
+    .nav-links > li:hover > button svg { transform: rotate(180deg); }
     .dropdown {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      background: var(--navy);
-      border: 1px solid rgba(58,123,213,0.25);
-      border-radius: 8px;
-      min-width: 220px;
-      padding: 0.5rem 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-6px);
-      transition: all 0.2s ease;
+      position: absolute; top: calc(100% + 8px); left: 0;
+      background: var(--navy); border: 1px solid rgba(139,92,246,0.25); border-radius: 8px;
+      min-width: 230px; padding: 0.5rem 0; opacity: 0; visibility: hidden;
+      transform: translateY(-6px); transition: all 0.2s ease;
       box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     }
+    .nav-links > li:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown a { display: block; padding: 0.55rem 1.2rem; font-size: 0.8rem; color: rgba(255,255,255,0.7); text-decoration: none; cursor: pointer; transition: color 0.15s, background 0.15s; }
+    .dropdown a:hover { color: #fff; background: rgba(139,92,246,0.12); }
+    .dropdown-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lilac); padding: 0.75rem 1.2rem 0.3rem; font-weight: 600; }
+    .dropdown .divider { height: 1px; background: rgba(139,92,246,0.12); margin: 0.35rem 0; }
+    .nav-cta { background: #a78bfa !important; color: #fff !important; border-radius: 6px; font-weight: 600 !important; padding: 0.45rem 1rem !important; }
+    .nav-cta:hover { background: #c4b5fd !important; color: var(--navy) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { width: 24px; height: 2px; background: #fff; border-radius: 2px; }
 
-    .nav-links > li:hover .dropdown {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
+    /* ── SHARED LAYOUT ── */
+    .page-hero {
+      background: var(--navy); padding: 110px 2.5rem 55px; position: relative; overflow: hidden;
     }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(139,92,246,0.15) 0%, transparent 60%);
+    }
+    .page-hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+    .breadcrumb { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+    .breadcrumb a { color: var(--lilac); text-decoration: none; cursor: pointer; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .hero-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .page-hero h1 { font-family: var(--serif); font-size: clamp(2rem,5vw,3.5rem); font-weight: 300; color: #fff; margin-bottom: 0.75rem; line-height: 1.1; }
+    .page-hero p { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 560px; line-height: 1.7; }
+    .back-bar { background: var(--light); padding: 0.9rem 2.5rem; border-bottom: 1px solid var(--border); }
+    .back-bar a { font-size: 0.8rem; font-weight: 500; color: var(--accent); text-decoration: none; cursor: pointer; }
+    .back-bar a:hover { text-decoration: underline; }
+    main { max-width: 1100px; margin: 0 auto; padding: 4rem 2.5rem 6rem; }
+    .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .section-label::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
+    .subcategory { margin-bottom: 3.5rem; }
+    .subcategory-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--light); }
+    .subcategory-header h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: var(--navy); }
+    .subcategory-tag { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; background: var(--light); color: var(--accent); padding: 0.3rem 0.7rem; border-radius: 20px; }
+    .article-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap: 1.25rem; }
+    .article-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1.5rem; text-decoration: none; display: block; cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; position: relative;
+    }
+    .article-card:hover { border-color: rgba(139,92,246,0.35); box-shadow: 0 8px 32px rgba(139,92,246,0.1); transform: translateY(-3px); }
+    .article-card-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+    .article-card h3 { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 0.4rem; }
+    .article-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+    .article-card-arrow { position: absolute; bottom: 1rem; right: 1rem; color: var(--accent); opacity: 0; transition: opacity 0.2s, transform 0.2s; }
+    .article-card:hover .article-card-arrow { opacity: 1; transform: translateX(3px); }
+    .prose-section p { font-size: 1rem; line-height: 1.8; color: #3d3060; margin-bottom: 1.2rem; }
+    .prose-section h2 { font-family: var(--serif); font-size: 1.7rem; font-weight: 400; color: var(--navy); margin: 2rem 0 0.75rem; }
+    .prose-section h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin: 1.5rem 0 0.5rem; }
+    .prose-section ul, .prose-section ol { padding-left: 1.5rem; margin-bottom: 1.2rem; }
+    .prose-section li { font-size: 1rem; line-height: 1.7; color: #3d3060; margin-bottom: 0.35rem; }
+    .prose-section ul li::marker { color: var(--accent); }
+    .prose-section a { color: var(--accent); }
+    .info-card { background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+    .info-card h3 { font-family: var(--serif); font-size: 1.3rem; color: var(--navy); margin-bottom: 0.75rem; }
+    .info-card p { font-size: 0.95rem; color: #3d3060; line-height: 1.75; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px,1fr)); gap: 2rem; margin-top: 2rem; }
+    .team-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
+    .team-card-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin-bottom: 0.25rem; }
+    .team-card-role { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .team-card-bio { font-size: 0.88rem; color: #3d3060; line-height: 1.7; }
+    .partner-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .partner-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+    .partner-card:hover { border-color: rgba(139,92,246,0.35); box-shadow: 0 8px 32px rgba(139,92,246,0.1); transform: translateY(-3px); }
+    .partner-card-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+    .partner-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+    .apply-strip { background: var(--navy); border-radius: 12px; padding: 2rem; margin-top: 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .apply-strip p { font-family: var(--serif); font-size: 1.3rem; color: #fff; }
+    .btn-lilac { background: #a78bfa; color: #fff; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; padding: 0.8rem 1.8rem; border-radius: 6px; text-decoration: none; transition: background 0.2s; white-space: nowrap; display: inline-block; }
+    .btn-lilac:hover { background: #c4b5fd; color: var(--navy); }
 
-    .dropdown a {
-      display: block;
-      padding: 0.55rem 1.2rem;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      transition: color 0.15s, background 0.15s;
-      white-space: nowrap;
-    }
+    /* Article body */
+    .article-body { max-width: 760px; }
+    .article-body p { font-size: 1.05rem; line-height: 1.85; color: #3d3060; margin-bottom: 1.4rem; }
+    .article-body h2 { font-family: var(--serif); font-size: 1.9rem; font-weight: 400; color: var(--navy); margin: 2.5rem 0 0.9rem; }
+    .article-body h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; color: var(--navy); margin: 2rem 0 0.7rem; }
+    .article-body h4 { font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin: 1.75rem 0 0.6rem; }
+    .article-body strong { font-weight: 600; color: var(--navy); }
+    .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.4rem; }
+    .article-body li { font-size: 1.05rem; line-height: 1.75; color: #3d3060; margin-bottom: 0.4rem; }
+    .article-body ul li::marker { color: var(--accent); }
+    .article-body blockquote { border-left: 3px solid var(--accent); margin: 2rem 0; padding: 1rem 1.5rem; background: var(--light); border-radius: 0 8px 8px 0; }
+    .article-body blockquote p { color: var(--navy); font-style: italic; font-size: 1.1rem; margin: 0; }
+    .article-body hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    .article-body a { color: var(--accent); text-decoration: underline; }
+    .article-meta-tags { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tag-dept { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(139,92,246,0.18); color: var(--lilac); padding: 0.3rem 0.8rem; border-radius: 20px; }
+    .tag-sub { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); padding: 0.3rem 0.8rem; border-radius: 20px; }
+    .article-byline { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+    .article-byline strong { color: rgba(255,255,255,0.7); }
+    .references { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--light); }
+    .references h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--navy); margin-bottom: 1rem; }
+    .references ol { padding-left: 1.5rem; }
+    .references li { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.5rem; }
+    .placeholder-note { color: var(--muted); font-style: italic; font-size: 1rem; }
 
-    .dropdown a:hover {
-      color: var(--white);
-      background: rgba(58,123,213,0.12);
-    }
-
-    .dropdown .dropdown-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--teal);
-      padding: 0.75rem 1.2rem 0.3rem;
-      font-weight: 600;
-    }
-
-    .dropdown .divider {
-      height: 1px;
-      background: rgba(58,123,213,0.15);
-      margin: 0.4rem 0;
-    }
-
-    .nav-cta {
-      background: #a78bfa !important;
-      color: #fff !important;
-      border-radius: 6px;
-      font-weight: 600 !important;
-      padding: 0.45rem 1rem !important;
-    }
-
-    .nav-cta:hover {
-      background: #c4b5fd !important;
-      color: var(--navy) !important;
-    }
-
-    /* hamburger */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-    }
-    .hamburger span {
-      width: 24px; height: 2px;
-      background: var(--white);
-      border-radius: 2px;
-      transition: all 0.3s;
-    }
-
-    /* ── HERO ── */
+    /* ── HOMEPAGE SPECIFIC ── */
     .hero {
-      min-height: 100vh;
-      background: var(--navy);
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      padding: 100px 2.5rem 60px;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(139,92,246,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(196,181,253,0.1) 0%, transparent 50%);
-    }
-
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(139,92,246,0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139,92,246,0.07) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 780px;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.2s forwards;
-    }
-
-    .hero-eyebrow::before {
-      content: '';
-      width: 28px; height: 1px;
-      background: var(--teal);
-    }
-
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(3rem, 6vw, 5.5rem);
-      font-weight: 300;
-      line-height: 1.05;
-      color: var(--white);
-      margin-bottom: 1.75rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.35s forwards;
-    }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--teal);
-    }
-
-    .hero-desc {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.65);
-      max-width: 580px;
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.5s forwards;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.65s forwards;
-    }
-
-    .btn-primary {
-      background: #a78bfa;
-      color: #fff;
-      font-family: var(--sans);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      padding: 0.85rem 2rem;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
-      display: inline-block;
-    }
-
-    .btn-primary:hover {
-      background: #c4b5fd;
-      transform: translateY(-2px);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: rgba(255,255,255,0.8);
-      font-family: var(--sans);
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      padding: 0.85rem 2rem;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.2);
-      text-decoration: none;
-      transition: border-color 0.2s, color 0.2s, transform 0.2s;
-      display: inline-block;
-    }
-
-    .btn-outline:hover {
-      border-color: rgba(255,255,255,0.5);
-      color: var(--white);
-      transform: translateY(-2px);
-    }
-
-    .hero-stat-row {
-      position: absolute;
-      bottom: 3rem;
-      left: 2.5rem;
-      right: 2.5rem;
-      display: flex;
-      gap: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.8s forwards;
-      z-index: 2;
-    }
-
-    .hero-stat {
-      border-left: 2px solid rgba(0,201,177,0.4);
-      padding-left: 1rem;
-    }
-
-    .hero-stat .num {
-      font-family: var(--serif);
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--white);
-      line-height: 1;
-    }
-
-    .hero-stat .label {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-top: 0.25rem;
-    }
-
-    /* ── ANNOUNCEMENT BANNER ── */
-    .banner {
-      background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
-      padding: 0.9rem 2.5rem;
-      text-align: center;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #fff;
-      letter-spacing: 0.02em;
-    }
-
-    .banner strong { font-weight: 700; }
-
-    /* ── SECTION COMMON ── */
-    section {
-      padding: 6rem 2.5rem;
-    }
-
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-
-    .section-label::before {
-      content: '';
-      width: 20px; height: 1px;
-      background: var(--accent);
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 300;
-      color: var(--navy);
-      line-height: 1.15;
-      margin-bottom: 1rem;
-    }
-
-    .section-subtitle {
-      font-size: 1rem;
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 560px;
-    }
-
-    /* ── ABOUT ── */
-    .about {
-      background: var(--light);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-      margin-top: 3rem;
-    }
-
-    .about-text p {
-      font-size: 1rem;
-      line-height: 1.8;
-      color: #3d4f6a;
-      margin-bottom: 1.25rem;
-    }
-
-    .about-text p:last-child { margin-bottom: 0; }
-
-    .about-visual {
-      position: relative;
-    }
-
-    .about-card {
-      background: var(--white);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 8px 40px rgba(10,22,40,0.08);
-      border: 1px solid var(--border);
-    }
-
-    .about-card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .about-card-icon {
-      width: 40px; height: 40px;
-      background: linear-gradient(135deg, var(--accent), #c4b5fd);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .about-card-icon svg {
-      width: 20px; height: 20px;
-      color: var(--white);
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-    }
-
-    .about-card-title {
-      font-family: var(--serif);
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--navy);
-    }
-
-    .about-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .about-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      font-size: 0.9rem;
-      color: #3d4f6a;
-      line-height: 1.5;
-    }
-
-    .about-list li::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0;
-      margin-top: 0.45rem;
-    }
-
-    /* ── DEPARTMENTS ── */
-    .dept-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.25rem;
-      margin-top: 3rem;
-    }
-
-    .dept-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-decoration: none;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      display: block;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .dept-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), #c4b5fd);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .dept-card:hover {
-      border-color: rgba(58,123,213,0.35);
-      box-shadow: 0 8px 32px rgba(58,123,213,0.1);
-      transform: translateY(-3px);
-    }
-
-    .dept-card:hover::before {
-      opacity: 1;
-    }
-
-    .dept-icon {
-      font-size: 1.5rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .dept-name {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 0.5rem;
-    }
-
-    .dept-desc {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .dept-arrow {
-      position: absolute;
-      bottom: 1.25rem;
-      right: 1.25rem;
-      color: var(--accent);
-      opacity: 0;
-      transition: opacity 0.2s, transform 0.2s;
-      font-size: 1.1rem;
-    }
-
-    .dept-card:hover .dept-arrow {
-      opacity: 1;
-      transform: translateX(3px);
-    }
-
-    /* ── APPLY ── */
-    .apply {
-      background: var(--navy);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .apply::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(196,181,253,0.12) 0%, transparent 60%);
-    }
-
-    .apply-inner {
-      position: relative;
-      z-index: 2;
-    }
-
-    .apply .section-title {
-      color: var(--white);
-    }
-
-    .apply .section-subtitle {
-      color: rgba(255,255,255,0.55);
-    }
-
-    .apply-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .apply-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 2rem;
-      text-decoration: none;
-      transition: background 0.2s, border-color 0.2s;
-      display: block;
-    }
-
-    .apply-card:hover {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(0,201,177,0.3);
-    }
-
-    .apply-card-type {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 0.75rem;
-    }
-
-    .apply-card-title {
-      font-family: var(--serif);
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: var(--white);
-      margin-bottom: 0.75rem;
-    }
-
-    .apply-card-desc {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
-
-    .apply-card-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--teal);
-      letter-spacing: 0.04em;
-    }
-
-    .apply-card-link svg {
-      width: 14px; height: 14px;
-      transition: transform 0.2s;
-    }
-
-    .apply-card:hover .apply-card-link svg {
-      transform: translateX(3px);
-    }
-
-    /* ── CONTACT ── */
-    .contact {
-      background: var(--light);
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      margin-top: 3rem;
-      align-items: start;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .contact-icon {
-      width: 42px; height: 42px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-      fill: none;
-      stroke-width: 2;
-    .contact-icon svg {
-      width: 18px; height: 18px;
-      color: var(--accent);
-      stroke: currentColor;
-    }
-
-    .contact-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .contact-value {
-      font-size: 0.95rem;
-      color: var(--navy);
-      font-weight: 500;
-    }
-
-    .contact-value a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .contact-value a:hover { text-decoration: underline; }
-
-    .social-section-title {
-      font-family: var(--serif);
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--navy);
-      margin-bottom: 1rem;
-    }
-
-    .social-box {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      text-decoration: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .social-box:hover {
-      border-color: rgba(58,123,213,0.35);
-      box-shadow: 0 4px 20px rgba(58,123,213,0.08);
-    }
-
-    .social-box-icon {
-      width: 44px; height: 44px;
-      background: linear-gradient(135deg, #a78bfa, #7c3aed);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .social-box-icon svg {
-      width: 22px; height: 22px;
-      color: white;
-      fill: currentColor;
-    }
-
-    .social-box-handle {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--navy);
-    }
-
-    .social-box-sub {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--navy);
-      padding: 4rem 2.5rem 2rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 3rem;
-    }
-
-    .footer-brand {
-      font-family: var(--serif);
-      font-size: 1.3rem;
-      color: var(--white);
-      font-weight: 400;
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-brand span { color: var(--teal); }
-
-    .footer-tagline {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.4);
-      line-height: 1.6;
-      max-width: 260px;
-    }
-
-    .footer-col-title {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 1rem;
-    }
-
-    .footer-col ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .footer-col ul li a {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.55);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-col ul li a:hover { color: var(--white); }
-
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding-top: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.3);
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+      min-height: 100vh; background: var(--navy);
+      display: flex; align-items: center; position: relative;
+      overflow: hidden; padding: 100px 2.5rem 60px;
+    }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(139,92,246,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 50% at 10% 80%, rgba(196,181,253,0.1) 0%, transparent 50%); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(139,92,246,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.07) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--lilac); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s 0.2s forwards; }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--lilac); }
+    .hero h1 { font-family: var(--serif); font-size: clamp(3rem,6vw,5.5rem); font-weight: 300; line-height: 1.05; color: #fff; margin-bottom: 1.75rem; opacity: 0; animation: fadeUp 0.7s 0.35s forwards; }
+    .hero h1 em { font-style: italic; color: var(--lilac); }
+    .hero-desc { font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.65); max-width: 580px; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.7s 0.5s forwards; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.65s forwards; }
+    .btn-primary { background: #a78bfa; color: #fff; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; padding: 0.85rem 2rem; border-radius: 6px; text-decoration: none; transition: background 0.2s, transform 0.2s; display: inline-block; cursor: pointer; border: none; }
+    .btn-primary:hover { background: #c4b5fd; color: var(--navy); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: rgba(255,255,255,0.8); font-family: var(--sans); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em; padding: 0.85rem 2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); text-decoration: none; transition: border-color 0.2s, color 0.2s, transform 0.2s; display: inline-block; cursor: pointer; }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.5); color: #fff; transform: translateY(-2px); }
+    .hero-stat-row { position: absolute; bottom: 3rem; left: 2.5rem; right: 2.5rem; display: flex; gap: 3rem; opacity: 0; animation: fadeUp 0.7s 0.8s forwards; z-index: 2; }
+    .hero-stat { border-left: 2px solid rgba(196,181,253,0.4); padding-left: 1rem; }
+    .hero-stat .num { font-family: var(--serif); font-size: 2rem; font-weight: 600; color: #fff; line-height: 1; }
+    .hero-stat .label { font-size: 0.72rem; color: rgba(255,255,255,0.45); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.25rem; }
+    .banner { background: linear-gradient(135deg, #a78bfa, #7c3aed); padding: 0.9rem 2.5rem; text-align: center; font-size: 0.85rem; font-weight: 500; color: #fff; }
+    .about { background: var(--light); padding: 6rem 2.5rem; }
+    .about-inner { max-width: 1200px; margin: 0 auto; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
+    .about-text p { font-size: 1rem; line-height: 1.8; color: #3d4f6a; margin-bottom: 1.25rem; }
+    .about-card { background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 8px 40px rgba(10,22,40,0.08); border: 1px solid var(--border); }
+    .about-card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .about-card-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent), #c4b5fd); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .about-card-icon svg { width: 20px; height: 20px; color: #fff; fill: none; stroke: currentColor; stroke-width: 2; }
+    .about-card-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: var(--navy); }
+    .about-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .about-list li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.9rem; color: #3d4f6a; line-height: 1.5; }
+    .about-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lilac); flex-shrink: 0; margin-top: 0.45rem; }
+    .dept-section { padding: 6rem 2.5rem; }
+    .dept-section-inner { max-width: 1200px; margin: 0 auto; }
+    .dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1.25rem; margin-top: 3rem; }
+    .dept-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; display: block; position: relative; overflow: hidden; }
+    .dept-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #c4b5fd); opacity: 0; transition: opacity 0.2s; }
+    .dept-card:hover { border-color: rgba(139,92,246,0.35); box-shadow: 0 8px 32px rgba(139,92,246,0.1); transform: translateY(-3px); }
+    .dept-card:hover::before { opacity: 1; }
+    .dept-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .dept-name { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+    .dept-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .dept-arrow { position: absolute; bottom: 1.25rem; right: 1.25rem; color: var(--accent); opacity: 0; transition: opacity 0.2s, transform 0.2s; }
+    .dept-card:hover .dept-arrow { opacity: 1; transform: translateX(3px); }
+    .apply-section { background: var(--navy); padding: 6rem 2.5rem; position: relative; overflow: hidden; }
+    .apply-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(196,181,253,0.12) 0%, transparent 60%); }
+    .apply-section-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+    .apply-section .section-title { color: #fff; }
+    .apply-section .section-subtitle { color: rgba(255,255,255,0.55); }
+    .apply-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+    .apply-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 2rem; cursor: pointer; text-decoration: none; transition: background 0.2s, border-color 0.2s; display: block; }
+    .apply-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(196,181,253,0.3); }
+    .apply-card-type { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lilac); margin-bottom: 0.75rem; }
+    .apply-card-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 400; color: #fff; margin-bottom: 0.75rem; }
+    .apply-card-desc { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 1.5rem; }
+    .apply-card-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 600; color: var(--lilac); }
+    .contact-section { background: var(--light); padding: 6rem 2.5rem; }
+    .contact-section-inner { max-width: 1200px; margin: 0 auto; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; align-items: start; }
+    .contact-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+    .contact-icon { width: 42px; height: 42px; background: #fff; border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-icon svg { width: 18px; height: 18px; color: var(--accent); stroke: currentColor; fill: none; stroke-width: 2; }
+    .contact-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+    .contact-value { font-size: 0.95rem; color: var(--navy); font-weight: 500; }
+    .contact-value a { color: var(--accent); text-decoration: none; }
+    .social-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin-bottom: 1rem; }
+    .social-box { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .social-box:hover { border-color: rgba(139,92,246,0.35); box-shadow: 0 4px 20px rgba(139,92,246,0.08); }
+    .social-box-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #a78bfa, #7c3aed); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .social-box-icon svg { width: 22px; height: 22px; color: #fff; fill: currentColor; }
+    .social-box-handle { font-size: 0.95rem; font-weight: 600; color: var(--navy); }
+    .social-box-sub { font-size: 0.78rem; color: var(--muted); }
+    .section-title { font-family: var(--serif); font-size: clamp(2rem,4vw,3rem); font-weight: 300; color: var(--navy); line-height: 1.15; margin-bottom: 1rem; }
+    .section-subtitle { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 560px; }
+
+    /* FOOTER */
+    footer { background: var(--navy); padding: 4rem 2.5rem 2rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .footer-brand { font-family: var(--serif); font-size: 1.3rem; color: #fff; font-weight: 400; margin-bottom: 0.75rem; }
+    .footer-brand span { color: var(--lilac); }
+    .footer-tagline { font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.6; max-width: 260px; }
+    .footer-col-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul li a { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-decoration: none; cursor: pointer; transition: color 0.15s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 0.5rem; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .nav-links { display: none; }
       .hamburger { display: flex; }
-
-      .about-grid,
-      .apply-cards,
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-      }
-
-      .footer-top {
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-      }
-
-      .hero-stat-row {
-        gap: 1.5rem;
-      }
+      .about-grid, .apply-cards, .contact-grid, .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-stat-row { gap: 1.5rem; }
     }
-
     @media (max-width: 560px) {
       nav { padding: 0 1.25rem; }
-      section { padding: 4rem 1.25rem; }
       .hero { padding: 90px 1.25rem 80px; }
-      .footer-top { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
       .hero-stat-row { position: relative; bottom: auto; left: auto; right: auto; margin-top: 3rem; flex-wrap: wrap; }
+      .about, .dept-section, .apply-section, .contact-section { padding: 4rem 1.25rem; }
+      main { padding: 2.5rem 1.25rem 4rem; }
+      .back-bar { padding: 0.9rem 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── NAVBAR ── -->
+<!-- ══════════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════════════ -->
 <nav>
-  <a href="/" class="nav-logo">Revitalised <span>Medicine</span></a>
-
-  <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-
+  <span class="nav-logo" onclick="goTo('home')">Revitalised <span>Medicine</span></span>
+  <ul class="nav-links" id="navLinks">
+    <li><a onclick="goTo('home')">Home</a></li>
     <li>
-      <button>Departments
-        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
-      </button>
+      <button>Departments <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
       <div class="dropdown">
         <div class="dropdown-label">Medical Fields</div>
-        <a href="/anatomy.html">Anatomy</a>
-        <a href="/biotechnology-and-bioinformatics.html">Biotechnology &amp; Bioinformatics</a>
-        <a href="/cardiology.html">Cardiology</a>
-        <a href="/endocrinology.html">Endocrinology</a>
-        <a href="/genetics.html">Genetics</a>
-        <a href="/gynaecology--obstetrics.html">Gynaecology &amp; Obstetrics</a>
-        <a href="/health-advocacy.html">Health Advocacy</a>
-        <a href="/neurology.html">Neurology</a>
-        <a href="/oncology.html">Oncology</a>
-        <a href="/pathology.html">Pathology</a>
-        <a href="/paediatrics.html">Paediatrics</a>
-        <a href="/surgery.html">Surgery</a>
+        <a onclick="goTo('anatomy')">Anatomy</a>
+        <a onclick="goTo('biotech')">Biotechnology &amp; Bioinformatics</a>
+        <a onclick="goTo('cardiology')">Cardiology</a>
+        <a onclick="goTo('endocrinology')">Endocrinology</a>
+        <a onclick="goTo('genetics')">Genetics</a>
+        <a onclick="goTo('gynaecology')">Gynaecology &amp; Obstetrics</a>
+        <a onclick="goTo('health-advocacy')">Health Advocacy</a>
+        <a onclick="goTo('neurology')">Neurology</a>
+        <a onclick="goTo('oncology')">Oncology</a>
+        <a onclick="goTo('pathology')">Pathology</a>
+        <a onclick="goTo('paediatrics')">Paediatrics</a>
+        <a onclick="goTo('surgery')">Surgery</a>
       </div>
     </li>
-
     <li>
-      <button>Chapters
-        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
-      </button>
+      <button>Chapters <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
       <div class="dropdown">
-        <a href="/chapters.html">About Chapters</a>
-        <a href="/how-to-start-a-chapter.html">How to Start a Chapter</a>
-        <a href="/organise-chapter-initiatives.html">Organise Initiatives</a>
+        <a onclick="goTo('chapters')">About Chapters</a>
+        <a onclick="goTo('how-to-start')">How to Start a Chapter</a>
+        <a onclick="goTo('organise')">Organise Initiatives</a>
       </div>
     </li>
-
     <li>
-      <button>Partnerships
-        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
-      </button>
+      <button>Partnerships <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
       <div class="dropdown">
-        <a href="/startowrite.html">StartOWrite</a>
-        <a href="/mediquills.html">MediQuills</a>
-        <a href="/the-stemist-society.html">The STEMIST Society</a>
-        <a href="/project-trauma.html">Project T.R.A.U.M.A</a>
-        <a href="/curequest.html">CureQuest</a>
+        <a onclick="goTo('startowrite')">StartOWrite</a>
+        <a onclick="goTo('mediquills')">MediQuills</a>
+        <a onclick="goTo('stemist')">The STEMIST Society</a>
+        <a onclick="goTo('trauma')">Project T.R.A.U.M.A</a>
+        <a onclick="goTo('curequest')">CureQuest</a>
       </div>
     </li>
-
-    <li><a href="/european-union-policy-initiative.html">EU Policy</a></li>
-    <li><a href="/our-executive-team.html">Our Team</a></li>
+    <li><a onclick="goTo('eu-policy')">EU Policy</a></li>
+    <li><a onclick="goTo('team')">Our Team</a></li>
     <li><a href="https://forms.gle/BAAKLnSWpy6NkhGeA" class="nav-cta" target="_blank">Apply Now</a></li>
   </ul>
-
-  <div class="hamburger" onclick="this.parentElement.querySelector('.nav-links').style.display='flex'">
+  <div class="hamburger" onclick="document.getElementById('navLinks').style.display='flex'">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
-<!-- ── BANNER ── -->
-<div class="banner">
-  🎉 <strong>Staff applications are now open!</strong> &nbsp;Join our growing team and help shape the future of medical education.
-  &nbsp;<a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" style="color:#fff;font-weight:700;text-decoration:underline;">Apply here →</a>
-</div>
-
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow">Student-led medical education</div>
-    <h1>Your gateway to <em>insightful</em> medical knowledge</h1>
-    <p class="hero-desc">
-      Revitalised Medicine is a student-run organisation spreading STEM knowledge in healthcare through accessible publications, chapters, and advocacy — from oncology to neurology and beyond.
-    </p>
-    <div class="hero-actions">
-      <a href="/departments.html" class="btn-primary">Explore Departments</a>
-      <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" class="btn-outline">Join the Team</a>
-    </div>
+<!-- ══════════════════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="banner">
+    🎉 <strong>Staff applications are now open!</strong> &nbsp;Join our growing team.
+    &nbsp;<a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" style="color:#fff;font-weight:700;text-decoration:underline;">Apply here →</a>
   </div>
-
-  <div class="hero-stat-row">
-    <div class="hero-stat">
-      <div class="num">93,000+</div>
-      <div class="label">Reached via international media</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">12</div>
-      <div class="label">Medical departments</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">2026</div>
-      <div class="label">Pushing further impact</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── ABOUT ── -->
-<section class="about">
-  <div class="section-inner">
-    <div class="section-label">About us</div>
-    <h2 class="section-title">Galvanising a student<br>community for medicine</h2>
-
-    <div class="about-grid">
-      <div class="about-text">
-        <p>
-          Welcome to Revitalised Medicine — your gateway to insightful medical articles, resources, and initiatives. We explore content related to recent medical research and informative publications across healthcare, including oncology, biotechnology, and genetics.
-        </p>
-        <p>
-          Our organisation aims to spread STEM-related knowledge about healthcare by galvanising a student community filled with passionate prospective medical providers. In 2025, we reached over 93,000 people through international media.
-        </p>
-        <p>
-          In the long term, we strive for revolutionary change throughout all communities, emphasising the importance of medical education accessibility and healthcare advocacy. Let's keep pushing to make an even bigger impact in 2026!
-        </p>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Student-led medical education</div>
+      <h1>Your gateway to <em>insightful</em> medical knowledge</h1>
+      <p class="hero-desc">Revitalised Medicine is a student-run organisation spreading STEM knowledge in healthcare through accessible publications, chapters, and advocacy — from oncology to neurology and beyond.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="goTo('anatomy')">Explore Departments</button>
+        <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" class="btn-outline">Join the Team</a>
       </div>
-
-      <div class="about-visual">
-        <div class="about-card">
-          <div class="about-card-header">
-            <div class="about-card-icon">
-              <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    <div class="hero-stat-row">
+      <div class="hero-stat"><div class="num">93,000+</div><div class="label">Reached via international media</div></div>
+      <div class="hero-stat"><div class="num">12</div><div class="label">Medical departments</div></div>
+      <div class="hero-stat"><div class="num">2026</div><div class="label">Pushing further impact</div></div>
+    </div>
+  </section>
+  <section class="about">
+    <div class="about-inner">
+      <div class="section-label">About us</div>
+      <h2 class="section-title">Galvanising a student<br>community for medicine</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Welcome to Revitalised Medicine — your gateway to insightful medical articles, resources, and initiatives. We explore content related to recent medical research and informative publications across healthcare, including oncology, biotechnology, and genetics.</p>
+          <p>Our organisation aims to spread STEM-related knowledge about healthcare by galvanising a student community filled with passionate prospective medical providers. In 2025, we reached over 93,000 people through international media.</p>
+          <p>In the long term, we strive for revolutionary change throughout all communities, emphasising the importance of medical education accessibility and healthcare advocacy. Let's keep pushing to make an even bigger impact in 2026!</p>
+        </div>
+        <div>
+          <div class="about-card">
+            <div class="about-card-header">
+              <div class="about-card-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+              <div class="about-card-title">What we do</div>
             </div>
-            <div class="about-card-title">What we do</div>
-          </div>
-          <ul class="about-list">
-            <li>Publish peer-reviewed medical articles across 12+ specialties</li>
-            <li>Support student chapters at schools and community centres</li>
-            <li>Advocate for equitable healthcare access globally</li>
-            <li>Partner with organisations like MediQuills &amp; CureQuest</li>
-            <li>Contribute EU health policy papers and position statements</li>
-            <li>Run webinars, diagnostics content, and a neurology library</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── DEPARTMENTS ── -->
-<section>
-  <div class="section-inner">
-    <div class="section-label">Explore</div>
-    <h2 class="section-title">Our departments</h2>
-    <p class="section-subtitle">Dive into curated, student-authored content across a wide range of medical disciplines.</p>
-
-    <div class="dept-grid">
-      <a href="/anatomy.html" class="dept-card">
-        <div class="dept-icon">🫁</div>
-        <div class="dept-name">Anatomy</div>
-        <div class="dept-desc">The gut-brain axis, the interstitium, and more forgotten frontiers.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/biotechnology-and-bioinformatics.html" class="dept-card">
-        <div class="dept-icon">🧬</div>
-        <div class="dept-name">Biotechnology &amp; Bioinformatics</div>
-        <div class="dept-desc">Genetic testing debates and the data science of life.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/cardiology.html" class="dept-card">
-        <div class="dept-icon">❤️</div>
-        <div class="dept-name">Cardiology</div>
-        <div class="dept-desc">AI advancements, rare disorders, and cutting-edge treatments.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/endocrinology.html" class="dept-card">
-        <div class="dept-icon">⚗️</div>
-        <div class="dept-name">Endocrinology</div>
-        <div class="dept-desc">Hormones, metabolic pathways, and systemic disease.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/neurology.html" class="dept-card">
-        <div class="dept-icon">🧠</div>
-        <div class="dept-name">Neurology</div>
-        <div class="dept-desc">MS, Huntington's, CNS breakthroughs, AI treatments &amp; a research library.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/oncology.html" class="dept-card">
-        <div class="dept-icon">🔬</div>
-        <div class="dept-name">Oncology</div>
-        <div class="dept-desc">CAR-T therapy, gene editing, liquid biopsies, and lymphoma research.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/pathology.html" class="dept-card">
-        <div class="dept-icon">🧫</div>
-        <div class="dept-name">Pathology</div>
-        <div class="dept-desc">AI in pathology, histopathology advances, and cellular disease.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/paediatrics.html" class="dept-card">
-        <div class="dept-icon">👶</div>
-        <div class="dept-name">Paediatrics</div>
-        <div class="dept-desc">Childhood asthma, Duchenne MD, neuromuscular disorders in children.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/health-advocacy.html" class="dept-card">
-        <div class="dept-icon">🌍</div>
-        <div class="dept-name">Health Advocacy</div>
-        <div class="dept-desc">Equitable access, marginalised communities, and global policy.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/genetics.html" class="dept-card">
-        <div class="dept-icon">🧪</div>
-        <div class="dept-name">Genetics</div>
-        <div class="dept-desc">Hereditary disease, molecular biology, and genomic medicine.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/gynaecology--obstetrics.html" class="dept-card">
-        <div class="dept-icon">🩺</div>
-        <div class="dept-name">Gynaecology &amp; Obstetrics</div>
-        <div class="dept-desc">Women's health, reproductive medicine, and maternal care.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-      <a href="/surgery.html" class="dept-card">
-        <div class="dept-icon">🔪</div>
-        <div class="dept-name">Surgery</div>
-        <div class="dept-desc">Surgical techniques, innovations, and perioperative care.</div>
-        <div class="dept-arrow">→</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ── APPLY ── -->
-<section class="apply">
-  <div class="section-inner apply-inner">
-    <div class="section-label" style="color:var(--teal)">Get involved</div>
-    <h2 class="section-title">Join Revitalised Medicine</h2>
-    <p class="section-subtitle">Applications are reviewed on a rolling basis. We welcome students at all levels who are passionate about medical education and healthcare advocacy.</p>
-
-    <div class="apply-cards">
-      <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" class="apply-card">
-        <div class="apply-card-type">Staff Application</div>
-        <div class="apply-card-title">Join our organisational team</div>
-        <div class="apply-card-desc">Become a writer, editor, researcher, or department lead. Help produce content and build our community of medical students worldwide.</div>
-        <div class="apply-card-link">
-          Fill out staff application
-          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
-        </div>
-      </a>
-
-      <a href="https://forms.gle/hWAnJZuksvyrrLEc9" target="_blank" class="apply-card">
-        <div class="apply-card-type">Chapter Application</div>
-        <div class="apply-card-title">Start a local chapter</div>
-        <div class="apply-card-desc">Bring Revitalised Medicine to your school, university, or community centre. Launch initiatives, host events, and grow the network locally.</div>
-        <div class="apply-card-link">
-          Fill out chapter application
-          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ── CONTACT ── -->
-<section class="contact">
-  <div class="section-inner">
-    <div class="section-label">Get in touch</div>
-    <h2 class="section-title">Contact &amp; social</h2>
-
-    <div class="contact-grid">
-      <div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          </div>
-          <div>
-            <div class="contact-label">Phone</div>
-            <div class="contact-value">+1-424-360-4732</div>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div>
-            <div class="contact-label">Email</div>
-            <div class="contact-value"><a href="https://mail.google.com/mail/u/0/#inbox"><span class="__cf_email__" data-cfemail="dcaeb9aab5a8bdb0b5afb9b8b1b9b8b5bfb5b2b9b3aebb9cbbb1bdb5b0f2bfb3b1">[email&#160;protected]</span></a></div>
+            <ul class="about-list">
+              <li>Publish peer-reviewed medical articles across 12+ specialties</li>
+              <li>Support student chapters at schools and community centres</li>
+              <li>Advocate for equitable healthcare access globally</li>
+              <li>Partner with organisations like MediQuills &amp; CureQuest</li>
+              <li>Contribute EU health policy papers and position statements</li>
+              <li>Run webinars, diagnostics content, and a neurology library</li>
+            </ul>
           </div>
         </div>
       </div>
-
-      <div>
-        <div class="social-section-title">Follow us</div>
-        <a href="https://instagram.com/revitalisedmedicine" target="_blank" class="social-box">
-          <div class="social-box-icon">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </div>
-          <div>
-            <div class="social-box-handle">@revitalised_medicine</div>
-            <div class="social-box-sub">Follow us on Instagram</div>
-          </div>
+    </div>
+  </section>
+  <section class="dept-section">
+    <div class="dept-section-inner">
+      <div class="section-label">Explore</div>
+      <h2 class="section-title">Our departments</h2>
+      <p class="section-subtitle">Dive into curated, student-authored content across a wide range of medical disciplines.</p>
+      <div class="dept-grid">
+        <div class="dept-card" onclick="goTo('anatomy')"><div class="dept-icon">🫁</div><div class="dept-name">Anatomy</div><div class="dept-desc">The gut-brain axis, the interstitium, and more forgotten frontiers.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('biotech')"><div class="dept-icon">🧬</div><div class="dept-name">Biotechnology &amp; Bioinformatics</div><div class="dept-desc">Genetic testing debates and the data science of life.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('cardiology')"><div class="dept-icon">❤️</div><div class="dept-name">Cardiology</div><div class="dept-desc">AI advancements, rare disorders, and cutting-edge treatments.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('endocrinology')"><div class="dept-icon">⚗️</div><div class="dept-name">Endocrinology</div><div class="dept-desc">Hormones, metabolic pathways, and systemic disease.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('neurology')"><div class="dept-icon">🧠</div><div class="dept-name">Neurology</div><div class="dept-desc">MS, Huntington's, CNS breakthroughs, AI treatments &amp; a research library.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('oncology')"><div class="dept-icon">🔬</div><div class="dept-name">Oncology</div><div class="dept-desc">CAR-T therapy, gene editing, liquid biopsies, and lymphoma research.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('pathology')"><div class="dept-icon">🧫</div><div class="dept-name">Pathology</div><div class="dept-desc">AI in pathology, histopathology advances, and cellular disease.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('paediatrics')"><div class="dept-icon">👶</div><div class="dept-name">Paediatrics</div><div class="dept-desc">Childhood asthma, Duchenne MD, neuromuscular disorders in children.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('health-advocacy')"><div class="dept-icon">🌍</div><div class="dept-name">Health Advocacy</div><div class="dept-desc">Equitable access, marginalised communities, and global policy.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('genetics')"><div class="dept-icon">🧪</div><div class="dept-name">Genetics</div><div class="dept-desc">Hereditary disease, molecular biology, and genomic medicine.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('gynaecology')"><div class="dept-icon">🩺</div><div class="dept-name">Gynaecology &amp; Obstetrics</div><div class="dept-desc">Women's health, reproductive medicine, and maternal care.</div><div class="dept-arrow">→</div></div>
+        <div class="dept-card" onclick="goTo('surgery')"><div class="dept-icon">🔪</div><div class="dept-name">Surgery</div><div class="dept-desc">Surgical techniques, innovations, and perioperative care.</div><div class="dept-arrow">→</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="apply-section">
+    <div class="apply-section-inner">
+      <div class="section-label" style="color:var(--lilac)">Get involved</div>
+      <h2 class="section-title">Join Revitalised Medicine</h2>
+      <p class="section-subtitle">Applications are reviewed on a rolling basis. We welcome students at all levels.</p>
+      <div class="apply-cards">
+        <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" class="apply-card">
+          <div class="apply-card-type">Staff Application</div>
+          <div class="apply-card-title">Join our organisational team</div>
+          <div class="apply-card-desc">Become a writer, editor, researcher, or department lead.</div>
+          <div class="apply-card-link">Fill out staff application →</div>
+        </a>
+        <a href="https://forms.gle/hWAnJZuksvyrrLEc9" target="_blank" class="apply-card">
+          <div class="apply-card-type">Chapter Application</div>
+          <div class="apply-card-title">Start a local chapter</div>
+          <div class="apply-card-desc">Bring Revitalised Medicine to your school or community centre.</div>
+          <div class="apply-card-link">Fill out chapter application →</div>
         </a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+  <section class="contact-section">
+    <div class="contact-section-inner">
+      <div class="section-label">Get in touch</div>
+      <h2 class="section-title">Contact &amp; social</h2>
+      <div class="contact-grid">
+        <div>
+          <div class="contact-item">
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+            <div><div class="contact-label">Phone</div><div class="contact-value">+1-424-360-4732</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="contact-label">Email</div><div class="contact-value"><a href="mailto:revitalisedmedicineorg@gmail.com">revitalisedmedicineorg@gmail.com</a></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="social-title">Follow us</div>
+          <a href="https://instagram.com/revitalisedmedicine" target="_blank" class="social-box">
+            <div class="social-box-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            <div><div class="social-box-handle">@revitalised_medicine</div><div class="social-box-sub">Follow us on Instagram</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end home -->
 
-<!-- ── FOOTER ── -->
+<!-- ══════════════════════════════════════════════════════
+     OUR TEAM
+════════════════════════════════════════════════════════ -->
+<div id="page-team" class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Our Executive Team</div>
+      <div class="hero-icon">👥</div>
+      <h1>Our Executive Team</h1>
+      <p>Meet the passionate student leaders behind Revitalised Medicine.</p>
+    </div>
+  </div>
+  <main>
+    <div class="section-label">Leadership</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-card-name">Enrique (Henry) De La Cruz</div>
+        <div class="team-card-role">Founder &amp; Director</div>
+        <p class="team-card-bio">Henry De La Cruz is an avid Southern California-based researcher on rare cellular diseases. Among some of their works include findings in protein regulation in Sanfilippo Syndrome-affected neurons and melanoma research proposal design. Outside of the lab, they enjoy promoting health advocacy as the founder of Revitalised Medicine, binging on British mystery crime novels, and indulging on daily doses of Taylor Swift.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-card-name">Saanvi Talwar</div>
+        <div class="team-card-role">Community Building Chair</div>
+        <p class="team-card-bio">Saanvi Talwar is a passionate student leader with a strong interest in medicine, psychology, and community impact. She serves as an executive for the Youth Neuropsychology Society (YNPS) chapter, designing interactive events to make neuroscience and mental health education engaging for youth. As the founder of her school's mentorship club, she empowers younger students through guidance and peer-to-peer support. Balancing her Indian heritage with her Canadian upbringing, Saanvi values diversity, leadership, and compassion, and aspires to become a physician.</p>
+      </div>
+    </div>
+    <div class="apply-strip">
+      <p>Interested in joining our team?</p>
+      <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" class="btn-lilac">Apply Now</a>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CHAPTERS
+════════════════════════════════════════════════════════ -->
+<div id="page-chapters" class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Chapters</div>
+      <div class="hero-icon">🌎</div>
+      <h1>Our Chapters</h1>
+      <p>Revitalised Medicine is expanding — new chapters are coming soon!</p>
+    </div>
+  </div>
+  <main>
+    <div class="prose-section">
+      <p>Revitalised Medicine will expand out of California soon! New chapters await. Our chapter network allows student communities around the world to bring medical education, health advocacy, and STEM resources to their local schools and community centres.</p>
+      <h2>Why Start a Chapter?</h2>
+      <p>Chapters are the backbone of our student community. As a chapter leader, you'll organise local educational events, run outreach campaigns, and connect passionate students with the broader Revitalised Medicine network.</p>
+    </div>
+    <div class="article-grid" style="margin-top:2rem">
+      <div class="article-card" onclick="goTo('how-to-start')"><div class="article-card-label">Chapters</div><h3>How to Start a Chapter</h3><p>Step-by-step guidance for launching a chapter at your school or community centre.</p><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('organise')"><div class="article-card-label">Chapters</div><h3>Organise Chapter Initiatives</h3><p>Ideas and frameworks for running impactful events and educational initiatives.</p><div class="article-card-arrow">→</div></div>
+    </div>
+    <div class="apply-strip">
+      <p>Ready to bring Revitalised Medicine to your community?</p>
+      <a href="https://forms.gle/hWAnJZuksvyrrLEc9" target="_blank" class="btn-lilac">Apply for a Chapter</a>
+    </div>
+  </main>
+</div>
+
+<div id="page-how-to-start" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('chapters')">Chapters</a> → How to Start</div><div class="hero-icon">📋</div><h1>How to Start a Chapter</h1><p>Everything you need to launch a Revitalised Medicine chapter.</p></div></div>
+  <main><div class="prose-section">
+    <p>Starting a chapter is one of the most impactful ways to get involved. Whether at a school, university, or community centre, chapters bring medical education and health advocacy directly to local communities.</p>
+    <h2>Step 1: Fill Out the Chapter Application</h2><p>Complete our chapter application form. We review applications on a rolling basis and will be in touch within a few weeks.</p>
+    <h2>Step 2: Recruit Your Team</h2><p>Every strong chapter needs a core team. Look for students passionate about medicine, science, and health advocacy. Aim for at least 3–5 founding members.</p>
+    <h2>Step 3: Get Institutional Support</h2><p>Identify a faculty advisor or community sponsor at your institution who can provide logistical support.</p>
+    <h2>Step 4: Plan Your First Initiative</h2><p>Check out our <a onclick="goTo('organise')" style="cursor:pointer">initiative planning guide</a> for ideas. A great first event could be a speaker talk, study group, or health awareness campaign.</p>
+    <h2>Step 5: Connect with HQ</h2><p>Once active, stay connected with the central Revitalised Medicine team for resources, publishing opportunities, and cross-chapter collaboration.</p>
+  </div>
+  <div class="apply-strip"><p>Ready to get started?</p><a href="https://forms.gle/hWAnJZuksvyrrLEc9" target="_blank" class="btn-lilac">Apply for a Chapter</a></div>
+  </main>
+</div>
+
+<div id="page-organise" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('chapters')">Chapters</a> → Organise Initiatives</div><div class="hero-icon">🗓️</div><h1>Organise Chapter Initiatives</h1><p>Frameworks and ideas for running impactful events at your local chapter.</p></div></div>
+  <main><div class="prose-section">
+    <p>Revitalised Medicine chapters thrive when they run regular, engaging initiatives that educate and inspire their communities. Here are some proven formats to get you started.</p>
+    <h2>Educational Events</h2><p>Host speaker talks, panel discussions, or mini-lectures on topics from any department area. Invite local medical professionals, researchers, or fellow students to present.</p>
+    <h2>Health Awareness Campaigns</h2><p>Run campaigns on underrepresented health topics, particularly those relevant to rare diseases and marginalised communities. Use social media, posters, and local outreach.</p>
+    <h2>Article Writing Workshops</h2><p>Train chapter members to write and submit medical articles for publication on the Revitalised Medicine website. Partner with department editors to guide the process.</p>
+    <h2>Community Partnerships</h2><p>Partner with local hospitals, clinics, or nonprofits to provide volunteers, run health screenings, or distribute educational materials.</p>
+    <h2>Webinars &amp; Online Events</h2><p>Collaborate with other chapters or the central team to host online webinars — great for reaching a wider audience.</p>
+  </div></main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     DEPARTMENT PAGES
+════════════════════════════════════════════════════════ -->
+
+<!-- ANATOMY -->
+<div id="page-anatomy" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Anatomy</div><div class="hero-icon">🫁</div><h1>Anatomy</h1><p>Exploring the body's structures and the frontiers of anatomical science.</p></div></div>
+  <main>
+    <div class="section-label">Articles</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Articles</h2><span class="subcategory-tag">Anatomy</span></div>
+    <div class="article-grid">
+      <div class="article-card" onclick="goTo('art-brain-twin')"><div class="article-card-label">Anatomy</div><h3>Your Brain Has a Twin — And It Lives in Your Gut</h3><p>Exploring the enteric nervous system and its surprising parallels with the brain.</p><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-interstitium')"><div class="article-card-label">Anatomy</div><h3>The Forgotten Organ: How the Interstitium Could Change Modern Medicine</h3><p>A look at the newly described interstitial tissue and its implications for medicine.</p><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- BIOTECH -->
+<div id="page-biotech" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Biotechnology &amp; Bioinformatics</div><div class="hero-icon">🧫</div><h1>Biotechnology &amp; Bioinformatics</h1><p>The intersection of molecular biology, data science, and modern medicine.</p></div></div>
+  <main>
+    <div class="section-label">Articles</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Articles</h2><span class="subcategory-tag">Biotechnology</span></div>
+    <div class="article-grid">
+      <div class="article-card" onclick="goTo('art-genetic-testing')"><div class="article-card-label">Biotechnology</div><h3>The Debate of Genetic Testing</h3><p>An exploration of the ethical, social, and scientific dimensions of genetic testing.</p><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- CARDIOLOGY -->
+<div id="page-cardiology" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Cardiology</div><div class="hero-icon">❤️</div><h1>Cardiology</h1><p>AI advancements, rare disorders, and cutting-edge treatments in heart medicine.</p></div></div>
+  <main>
+    <div class="section-label">Sub-departments</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>AI Advancements</h2><span class="subcategory-tag">Cardiology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-afib-ai')"><div class="article-card-label">AI Advancements</div><h3>AI-Guided Treatment of Atrial Fibrillation in the Advanced World of Cardiology</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-cardio-ai-screening')"><div class="article-card-label">AI Advancements</div><h3>AI-Powered Screening Tools: A New Frontier in Cardiology</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Disorders</h2><span class="subcategory-tag">Cardiology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-amyloidosis')"><div class="article-card-label">Disorders</div><h3>Cardiac Amyloidosis: An Uncommon Disorder of the Heart Compared to Prevalent Cardiomyopathies</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-storage-diseases')"><div class="article-card-label">Disorders</div><h3>Cardiac Storage Diseases: Hidden Threats to the Heart</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ai-heart-detection')"><div class="article-card-label">Disorders</div><h3>Artificial Intelligence in Early Detection of Heart Disease: From Diagnosis to Treatment</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Treatments</h2><span class="subcategory-tag">Cardiology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-recombinant-angina')"><div class="article-card-label">Treatments</div><h3>Recombinant Therapy for Linked Angina</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- ENDOCRINOLOGY -->
+<div id="page-endocrinology" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Endocrinology</div><div class="hero-icon">⚗️</div><h1>Endocrinology</h1><p>Hormones, metabolic pathways, and systemic disease.</p></div></div>
+  <main><div class="info-card"><h3>Coming Soon</h3><p>Articles for the Endocrinology department are being developed. <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" style="color:var(--accent)">Apply to write for this department</a>.</p></div></main>
+</div>
+
+<!-- GENETICS -->
+<div id="page-genetics" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Genetics</div><div class="hero-icon">🧪</div><h1>Genetics</h1><p>Hereditary disease, molecular biology, and the genomic frontier.</p></div></div>
+  <main><div class="info-card"><h3>Coming Soon</h3><p>Articles for the Genetics department are being developed. <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" style="color:var(--accent)">Apply to contribute</a>.</p></div></main>
+</div>
+
+<!-- GYNAECOLOGY -->
+<div id="page-gynaecology" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Gynaecology &amp; Obstetrics</div><div class="hero-icon">🩺</div><h1>Gynaecology &amp; Obstetrics</h1><p>Women's health, reproductive medicine, and maternal care.</p></div></div>
+  <main><div class="info-card"><h3>Coming Soon</h3><p>Articles for this department are in development. <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" style="color:var(--accent)">Apply to contribute</a>.</p></div></main>
+</div>
+
+<!-- SURGERY -->
+<div id="page-surgery" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Surgery</div><div class="hero-icon">🔪</div><h1>Surgery</h1><p>Surgical techniques, innovations, and perioperative care.</p></div></div>
+  <main><div class="info-card"><h3>Coming Soon</h3><p>Articles for the Surgery department are in development. <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" style="color:var(--accent)">Apply to contribute</a>.</p></div></main>
+</div>
+
+<!-- HEALTH ADVOCACY -->
+<div id="page-health-advocacy" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Health Advocacy</div><div class="hero-icon">🌍</div><h1>Health Advocacy</h1><p>Equitable access, marginalised communities, and global policy reform.</p></div></div>
+  <main><div class="section-label">Articles</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Articles</h2><span class="subcategory-tag">Health Advocacy</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-barriers-cardio')"><div class="article-card-label">Health Advocacy</div><h3>Barriers Faced by Marginalised Communities in Accessing Treatment for Rare Cardiological Diseases</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-barriers-equitable')"><div class="article-card-label">Health Advocacy</div><h3>Barriers to Equitable Health</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-marginalised-cancer')"><div class="article-card-label">Health Advocacy</div><h3>Marginalised Communities and Access to Rare Cancer Treatment</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-global-policy-cardio')"><div class="article-card-label">Health Advocacy</div><h3>Global Policy and Advocacy Advances Improving Access to Treatment for Rare Cardiological Diseases</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-diagnostic-gap')"><div class="article-card-label">Health Advocacy</div><h3>Bridging the Diagnostic Gap: Improving Access to Immunohistochemistry in Resource-Limited Regions</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- NEUROLOGY -->
+<div id="page-neurology" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Neurology</div><div class="hero-icon">🧠</div><h1>Neurology</h1><p>The brain, mind, nervous system, and cutting-edge neurological research.</p></div></div>
+  <main><div class="section-label">Sub-departments</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Diagnostics</h2><span class="subcategory-tag">Neurology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-digital-markers')"><div class="article-card-label">Diagnostics</div><h3>How Digital Markers and Wearable Technology Can Predict Neurological Decline</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Disorders</h2><span class="subcategory-tag">Neurology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-molecular-errors')"><div class="article-card-label">Disorders</div><h3>When Molecular Errors Reshape the Mind: Rare Neurological Diseases and Their Psychological Toll</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ms')"><div class="article-card-label">Disorders</div><h3>Inside the Mystery of Multiple Sclerosis: How the Body Turns Against Its Own Nerves</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-pitt-hopkins')"><div class="article-card-label">Disorders</div><h3>Pitt-Hopkins Syndrome: A Neurodevelopmental Overview</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-huntingtons')"><div class="article-card-label">Disorders</div><h3>Huntington's Disease: A Neurodegenerative and Molecular Overview</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Library</h2><span class="subcategory-tag">Neurology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-research-papers')"><div class="article-card-label">Library</div><h3>Research Papers</h3><p>Curated collection of peer-reviewed research papers in neurology.</p><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-journals')"><div class="article-card-label">Library</div><h3>Journals</h3><p>Recommended neurological journals and publications.</p><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Nervous Systems</h2><span class="subcategory-tag">Neurology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-neuro-overview')"><div class="article-card-label">Nervous Systems</div><h3>Neurology: Explaining the Brain, Mind, and Nervous System</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-autonomic')"><div class="article-card-label">Nervous Systems</div><h3>The Autonomic Nervous System: Mechanisms, Disorders, and Future Directions</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-cns')"><div class="article-card-label">Nervous Systems</div><h3>Unlocking the Secrets of the Central Nervous System: Breakthroughs and New Discoveries</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-pns')"><div class="article-card-label">Nervous Systems</div><h3>The Peripheral Nervous System: Structural Organization, Functional Divisions, and Physiological Significance</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Treatments</h2><span class="subcategory-tag">Neurology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-stem-mps')"><div class="article-card-label">Treatments</div><h3>Stem Cell Therapy: A New Hope for Mucopolysaccharidosis III and Pediatric Neurological Diseases</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ai-neuro-treatment')"><div class="article-card-label">Treatments</div><h3>AI Treatments in Neurology: How Artificial Intelligence is Transforming Brain Health</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-huntingtons-treatment')"><div class="article-card-label">Treatments</div><h3>Biotechnological Treatments for Huntington's Disease: Emerging Therapies and Clinical Trial Progress</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Webinars</h2><span class="subcategory-tag">Neurology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-gut-brain')"><div class="article-card-label">Webinars</div><h3>The Gut-Brain Axis: How the Microbiome Influences Your Health</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-cognitive-bias')"><div class="article-card-label">Webinars</div><h3>Cognitive Bias and Decision-Making</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- ONCOLOGY -->
+<div id="page-oncology" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Oncology</div><div class="hero-icon">🔬</div><h1>Oncology</h1><p>CAR-T therapy, gene editing, liquid biopsies, and lymphoma research.</p></div></div>
+  <main><div class="section-label">Sub-departments</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Disorders</h2><span class="subcategory-tag">Oncology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-lymphoma')"><div class="article-card-label">Disorders</div><h3>Hodgkin and Non-Hodgkin Lymphoma: What's the Same and What's Not</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-myeloma')"><div class="article-card-label">Disorders</div><h3>What is Multiple Myeloma?</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-paraneoplastic')"><div class="article-card-label">Disorders</div><h3>Paraneoplastic Syndromes</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-merkel')"><div class="article-card-label">Disorders</div><h3>Merkel Cell Carcinoma</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Research Considerations</h2><span class="subcategory-tag">Oncology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-recombinant-blood')"><div class="article-card-label">Research Considerations</div><h3>Considerations Regarding the Application of Recombinant DNA Technology in Blood Cancer Treatment</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ai-melanoma')"><div class="article-card-label">Research Considerations</div><h3>Considerations Using AI in Treating Melanomas and Sarcomas</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-lymphatic-cancer')"><div class="article-card-label">Research Considerations</div><h3>Treatment Considerations for Cancers Developing Through the Lymphatic System</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Treatments</h2><span class="subcategory-tag">Oncology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-gene-therapy-cancer')"><div class="article-card-label">Treatments</div><h3>Rewriting the Code: How Gene Therapy is Transforming Cancer Treatment</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-cart')"><div class="article-card-label">Treatments</div><h3>CAR-T Cell Therapy in Pediatric Acute Lymphoblastic Leukemia: A Breakthrough in Precision Oncology</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-liquid-biopsy')"><div class="article-card-label">Treatments</div><h3>Liquid Biopsies in Oncology: Redefining the Future of Cancer Care</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-oncolytic')"><div class="article-card-label">Treatments</div><h3>Oncolytic Viruses — Using Viruses to Fight Cancer</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-pd1')"><div class="article-card-label">Treatments</div><h3>The Role of PD-1 Checkpoint Inhibitors in Classical Hodgkin Lymphoma Treatment</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-recombinant-all')"><div class="article-card-label">Treatments</div><h3>Recombinant DNA Technology in the Treatment of Acute Lymphoblastic Leukemia</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- PATHOLOGY -->
+<div id="page-pathology" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Pathology</div><div class="hero-icon">🧫</div><h1>Pathology</h1><p>AI in pathology, histopathology advances, and cellular disease mechanisms.</p></div></div>
+  <main><div class="section-label">Sub-departments</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>AI Advancements</h2><span class="subcategory-tag">Pathology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-ai-neuro-path')"><div class="article-card-label">AI Advancements</div><h3>Artificial Intelligence in Neurodegenerative Disease Pathology</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ai-cardio-path')"><div class="article-card-label">AI Advancements</div><h3>The Role of Emerging AI Technologies in Improving Cardiological Pathology</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ai-biomarkers')"><div class="article-card-label">AI Advancements</div><h3>AI Advancements in Identifying Pathophysiological Biomarkers</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Cellular Pathology</h2><span class="subcategory-tag">Pathology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-liver')"><div class="article-card-label">Cellular Pathology</div><h3>Pathological Features of Liver Diseases</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-renal')"><div class="article-card-label">Cellular Pathology</div><h3>Pathology of Renal Cell Carcinoma and Cancers Involving TFEB or TFE3 Gene Translocations</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-neuro-path-insights')"><div class="article-card-label">Cellular Pathology</div><h3>Pathological Insights into the Etiology of Neurodegenerative Diseases</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Histopathology</h2><span class="subcategory-tag">Pathology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-histopath-melanoma')"><div class="article-card-label">Histopathology</div><h3>The Expanding Role of Histopathology in Melanoma: Diagnostic Advances and Emerging Techniques</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Pathophysiology</h2><span class="subcategory-tag">Pathology</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-inflammatory')"><div class="article-card-label">Pathophysiology</div><h3>Understanding the Pathophysiology of Inflammatory Diseases</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ebola')"><div class="article-card-label">Pathophysiology</div><h3>Pathophysiology of Ebola Virus Disease</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-chikungunya')"><div class="article-card-label">Pathophysiology</div><h3>Pathophysiology of Chikungunya Fever: A Rare Mosquito-Borne Tropical Disease</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-cardio-path-methods')"><div class="article-card-label">Pathophysiology</div><h3>Recent Pathophysiological Research Methodologies in Cardiovascular Sciences</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- PAEDIATRICS -->
+<div id="page-paediatrics" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Departments → Paediatrics</div><div class="hero-icon">👶</div><h1>Paediatrics</h1><p>Childhood diseases, AI in paediatric care, and neuromuscular disorders.</p></div></div>
+  <main><div class="section-label">Articles</div>
+    <div class="subcategory"><div class="subcategory-header"><h2>Articles</h2><span class="subcategory-tag">Paediatrics</span></div><div class="article-grid">
+      <div class="article-card" onclick="goTo('art-asthma')"><div class="article-card-label">Paediatrics</div><h3>Childhood Asthma</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-fpies')"><div class="article-card-label">Paediatrics</div><h3>Food Protein-Induced Enterocolitis Syndrome</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-ai-allergy')"><div class="article-card-label">Paediatrics</div><h3>Artificial Intelligence: Revolutionising Today's Paediatric Allergy Care</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-duchenne')"><div class="article-card-label">Paediatrics</div><h3>Duchenne Muscular Dystrophy</h3><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-neuromuscular')"><div class="article-card-label">Paediatrics</div><h3>Treating Neuromuscular Disorders in Children</h3><div class="article-card-arrow">→</div></div>
+    </div></div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     EU POLICY
+════════════════════════════════════════════════════════ -->
+<div id="page-eu-policy" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → EU Policy Initiative</div><div class="hero-icon">🇪🇺</div><h1>European Union Policy Initiative</h1><p>Student-authored policy papers and advocacy contributions to EU public health.</p></div></div>
+  <main>
+    <div class="prose-section"><p>Revitalised Medicine actively contributes to European Union health policy discourse through student-authored policy papers, position statements, and responses to public consultations. Our EU Policy Initiative reflects our commitment to healthcare advocacy at the highest levels of governance.</p></div>
+    <div class="article-grid" style="margin-top:2rem">
+      <div class="article-card" onclick="goTo('art-ehds')"><div class="article-card-label">EU Policy</div><h3>Response to European Health Data Space Operations</h3><p>Our formal student response to the EU's European Health Data Space framework.</p><div class="article-card-arrow">→</div></div>
+      <div class="article-card" onclick="goTo('art-eu-papers')"><div class="article-card-label">Policy Papers</div><h3>European Union Public Health Policy Papers</h3><p>A collection of policy papers authored by Revitalised Medicine members.</p><div class="article-card-arrow">→</div></div>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PARTNERSHIPS
+════════════════════════════════════════════════════════ -->
+<div id="page-partnerships" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → Partnerships</div><div class="hero-icon">🤝</div><h1>Partnerships</h1><p>Our network of allied organisations advancing medical education and health advocacy.</p></div></div>
+  <main><div class="section-label">Our Partners</div>
+    <div class="partner-grid">
+      <div class="partner-card" onclick="goTo('startowrite')"><div class="partner-card-name">StartOWrite</div><p class="partner-card-desc">A writing initiative supporting student medical authors in developing and publishing high-quality healthcare content.</p></div>
+      <div class="partner-card" onclick="goTo('mediquills')"><div class="partner-card-name">MediQuills</div><p class="partner-card-desc">Where science meets stories — oncology children's books, policy papers, and creative medical writing.</p></div>
+      <div class="partner-card" onclick="goTo('stemist')"><div class="partner-card-name">The STEMIST Society</div><p class="partner-card-desc">A student society dedicated to broadening STEM access and fostering the next generation of scientists.</p></div>
+      <div class="partner-card" onclick="goTo('trauma')"><div class="partner-card-name">Project T.R.A.U.M.A</div><p class="partner-card-desc">A project focused on trauma-informed approaches to healthcare education and community support.</p></div>
+      <div class="partner-card" onclick="goTo('curequest')"><div class="partner-card-name">CureQuest</div><p class="partner-card-desc">An initiative driving student-led research into cures for rare and neglected diseases.</p></div>
+    </div>
+  </main>
+</div>
+
+<div id="page-startowrite" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('partnerships')">Partnerships</a> → StartOWrite</div><div class="hero-icon">✍️</div><h1>StartOWrite</h1><p>A writing initiative supporting student medical authors.</p></div></div>
+  <main><div class="prose-section"><p>StartOWrite is a writing initiative partnered with Revitalised Medicine to support student authors in developing and publishing high-quality medical and healthcare content. Through workshops, editorial mentorship, and publishing opportunities, StartOWrite empowers the next generation of medical writers.</p></div>
+  <div class="article-grid" style="margin-top:2rem"><div class="article-card" onclick="goTo('art-startowrite-articles')"><div class="article-card-label">StartOWrite</div><h3>StartOWrite Articles</h3><p>Browse articles authored through the StartOWrite initiative.</p><div class="article-card-arrow">→</div></div></div></main>
+</div>
+
+<div id="page-mediquills" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('partnerships')">Partnerships</a> → MediQuills</div><div class="hero-icon">📚</div><h1>MediQuills</h1><p>Where science meets stories — oncology books, policy papers, and creative medical writing.</p></div></div>
+  <main><div class="prose-section"><p>MediQuills is a creative medical writing partnership that bridges scientific rigour with accessible storytelling. From children's oncology books to EU health policy papers, MediQuills makes complex medical topics understandable for all audiences.</p></div>
+  <div class="article-grid" style="margin-top:2rem">
+    <div class="article-card" onclick="goTo('art-beyond-helix')"><div class="article-card-label">MediQuills</div><h3>Beyond the Helix: Science Meets Stories</h3><div class="article-card-arrow">→</div></div>
+    <div class="article-card" onclick="goTo('art-kindle-oncology')"><div class="article-card-label">MediQuills</div><h3>Kindle-Published Oncology Children's Stories</h3><div class="article-card-arrow">→</div></div>
+    <div class="article-card" onclick="goTo('art-eu-papers')"><div class="article-card-label">MediQuills</div><h3>European Union Public Health Policy Papers</h3><div class="article-card-arrow">→</div></div>
+  </div></main>
+</div>
+
+<div id="page-stemist" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('partnerships')">Partnerships</a> → The STEMIST Society</div><div class="hero-icon">🔭</div><h1>The STEMIST Society</h1><p>Broadening STEM access and fostering the next generation of scientists.</p></div></div>
+  <main><div class="prose-section"><p>The STEMIST Society is a student-led organisation dedicated to expanding access to STEM education and creating pathways for underrepresented students into science and healthcare careers. As a Revitalised Medicine partner, the STEMIST Society helps grow our community and co-organises educational events and outreach initiatives.</p></div></main>
+</div>
+
+<div id="page-trauma" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('partnerships')">Partnerships</a> → Project T.R.A.U.M.A</div><div class="hero-icon">💙</div><h1>Project T.R.A.U.M.A</h1><p>Trauma-informed approaches to healthcare education and community support.</p></div></div>
+  <main><div class="prose-section"><p>Project T.R.A.U.M.A is a Revitalised Medicine partner initiative focused on trauma-informed healthcare education. The project develops resources and training materials that help healthcare students and professionals understand the role of trauma in patient care and community health outcomes.</p></div></main>
+</div>
+
+<div id="page-curequest" class="page">
+  <div class="page-hero"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('partnerships')">Partnerships</a> → CureQuest</div><div class="hero-icon">🔍</div><h1>CureQuest</h1><p>Student-led research into cures and treatments for rare and neglected diseases.</p></div></div>
+  <main><div class="prose-section"><p>CureQuest is a research initiative partnered with Revitalised Medicine that focuses on rare and neglected diseases — conditions that often receive insufficient attention from mainstream research institutions. CureQuest members conduct literature reviews, develop research proposals, and advocate for increased resources directed at these conditions.</p></div></main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ARTICLE PAGES — paste content between the markers
+════════════════════════════════════════════════════════ -->
+
+<!-- ANATOMY ARTICLES -->
+<div id="page-art-brain-twin" class="page">
+  <div class="back-bar"><a onclick="goTo('anatomy')">← Back to Anatomy</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('anatomy')">Anatomy</a> → Articles</div><div class="article-meta-tags"><span class="tag-dept">Anatomy</span><span class="tag-sub">Articles</span></div><h1>Your Brain Has a Twin — And It Lives in Your Gut</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body">
+    <!-- PASTE ARTICLE CONTENT HERE -->
+    <p class="placeholder-note">Paste your article content here. Use &lt;p&gt; for paragraphs, &lt;h2&gt; for sections, &lt;h3&gt; for subsections, &lt;ul&gt;&lt;li&gt; for lists, &lt;blockquote&gt; for pull quotes.</p>
+  </article></main>
+</div>
+
+<div id="page-art-interstitium" class="page">
+  <div class="back-bar"><a onclick="goTo('anatomy')">← Back to Anatomy</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('anatomy')">Anatomy</a> → Articles</div><div class="article-meta-tags"><span class="tag-dept">Anatomy</span><span class="tag-sub">Articles</span></div><h1>The Forgotten Organ: How the Interstitium Could Change Modern Medicine</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+
+<!-- BIOTECHNOLOGY ARTICLES -->
+<div id="page-art-genetic-testing" class="page">
+  <div class="back-bar"><a onclick="goTo('biotech')">← Back to Biotechnology &amp; Bioinformatics</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('biotech')">Biotechnology</a> → Articles</div><div class="article-meta-tags"><span class="tag-dept">Biotechnology</span><span class="tag-sub">Articles</span></div><h1>The Debate of Genetic Testing</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+
+<!-- CARDIOLOGY ARTICLES -->
+<div id="page-art-afib-ai" class="page">
+  <div class="back-bar"><a onclick="goTo('cardiology')">← Back to Cardiology</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('cardiology')">Cardiology</a> → AI Advancements</div><div class="article-meta-tags"><span class="tag-dept">Cardiology</span><span class="tag-sub">AI Advancements</span></div><h1>AI-Guided Treatment of Atrial Fibrillation in the Advanced World of Cardiology</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+<div id="page-art-cardio-ai-screening" class="page">
+  <div class="back-bar"><a onclick="goTo('cardiology')">← Back to Cardiology</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="breadcrumb"><a onclick="goTo('home')">Home</a> → <a onclick="goTo('cardiology')">Cardiology</a> → AI Advancements</div><div class="article-meta-tags"><span class="tag-dept">Cardiology</span><span class="tag-sub">AI Advancements</span></div><h1>AI-Powered Screening Tools: A New Frontier in Cardiology</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+<div id="page-art-amyloidosis" class="page">
+  <div class="back-bar"><a onclick="goTo('cardiology')">← Back to Cardiology</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Cardiology</span><span class="tag-sub">Disorders</span></div><h1>Cardiac Amyloidosis: An Uncommon Disorder of the Heart Compared to Prevalent Cardiomyopathies</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+<div id="page-art-storage-diseases" class="page">
+  <div class="back-bar"><a onclick="goTo('cardiology')">← Back to Cardiology</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Cardiology</span><span class="tag-sub">Disorders</span></div><h1>Cardiac Storage Diseases: Hidden Threats to the Heart</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+<div id="page-art-ai-heart-detection" class="page">
+  <div class="back-bar"><a onclick="goTo('cardiology')">← Back to Cardiology</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Cardiology</span><span class="tag-sub">Disorders</span></div><h1>Artificial Intelligence in Early Detection of Heart Disease: From Diagnosis to Treatment</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+<div id="page-art-recombinant-angina" class="page">
+  <div class="back-bar"><a onclick="goTo('cardiology')">← Back to Cardiology</a></div>
+  <div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Cardiology</span><span class="tag-sub">Treatments</span></div><h1>Recombinant Therapy for Linked Angina</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div>
+  <main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main>
+</div>
+
+<!-- HEALTH ADVOCACY ARTICLES -->
+<div id="page-art-barriers-cardio" class="page"><div class="back-bar"><a onclick="goTo('health-advocacy')">← Back to Health Advocacy</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Health Advocacy</span></div><h1>Barriers Faced by Marginalised Communities in Accessing Treatment for Rare Cardiological Diseases</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-barriers-equitable" class="page"><div class="back-bar"><a onclick="goTo('health-advocacy')">← Back to Health Advocacy</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Health Advocacy</span></div><h1>Barriers to Equitable Health</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-marginalised-cancer" class="page"><div class="back-bar"><a onclick="goTo('health-advocacy')">← Back to Health Advocacy</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Health Advocacy</span></div><h1>Marginalised Communities and Access to Rare Cancer Treatment</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-global-policy-cardio" class="page"><div class="back-bar"><a onclick="goTo('health-advocacy')">← Back to Health Advocacy</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Health Advocacy</span></div><h1>Global Policy and Advocacy Advances Improving Access to Treatment for Rare Cardiological Diseases</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-diagnostic-gap" class="page"><div class="back-bar"><a onclick="goTo('health-advocacy')">← Back to Health Advocacy</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Health Advocacy</span></div><h1>Bridging the Diagnostic Gap: Improving Access to Immunohistochemistry in Resource-Limited Regions</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+
+<!-- NEUROLOGY ARTICLES -->
+<div id="page-art-digital-markers" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Diagnostics</span></div><h1>How Digital Markers and Wearable Technology Can Predict Neurological Decline</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-molecular-errors" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Disorders</span></div><h1>When Molecular Errors Reshape the Mind: Rare Neurological Diseases and Their Psychological Toll</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-ms" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Disorders</span></div><h1>Inside the Mystery of Multiple Sclerosis: How the Body Turns Against Its Own Nerves</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-pitt-hopkins" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Disorders</span></div><h1>Pitt-Hopkins Syndrome: A Neurodevelopmental Overview</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-huntingtons" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Disorders</span></div><h1>Huntington's Disease: A Neurodegenerative and Molecular Overview</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-research-papers" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Library</span></div><h1>Research Papers</h1></div></div><main><div class="info-card"><h3>Research Paper Library</h3><p>Paste your curated research paper list here. You can use links, citations, and annotations.</p></div></main></div>
+<div id="page-art-journals" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Library</span></div><h1>Journals</h1></div></div><main><div class="info-card"><h3>Recommended Journals</h3><p>Paste your recommended journal list here.</p></div></main></div>
+<div id="page-art-neuro-overview" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Nervous Systems</span></div><h1>Neurology: Explaining the Brain, Mind, and Nervous System</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-autonomic" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Nervous Systems</span></div><h1>The Autonomic Nervous System: Mechanisms, Disorders, and Future Directions</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-cns" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Nervous Systems</span></div><h1>Unlocking the Secrets of the Central Nervous System: Breakthroughs and New Discoveries</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-pns" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Nervous Systems</span></div><h1>The Peripheral Nervous System: Structural Organization, Functional Divisions, and Physiological Significance</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-stem-mps" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Treatments</span></div><h1>Stem Cell Therapy: A New Hope for Mucopolysaccharidosis III and Pediatric Neurological Diseases</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-ai-neuro-treatment" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Treatments</span></div><h1>AI Treatments in Neurology: How Artificial Intelligence is Transforming Brain Health</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-huntingtons-treatment" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Treatments</span></div><h1>Biotechnological Treatments for Huntington's Disease: Emerging Therapies and Clinical Trial Progress</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-gut-brain" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Webinars</span></div><h1>The Gut-Brain Axis: How the Microbiome Influences Your Health</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-cognitive-bias" class="page"><div class="back-bar"><a onclick="goTo('neurology')">← Back to Neurology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Neurology</span><span class="tag-sub">Webinars</span></div><h1>Cognitive Bias and Decision-Making</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+
+<!-- ONCOLOGY ARTICLES -->
+<div id="page-art-lymphoma" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Disorders</span></div><h1>Hodgkin and Non-Hodgkin Lymphoma: What's the Same and What's Not</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-myeloma" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Disorders</span></div><h1>What is Multiple Myeloma?</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-paraneoplastic" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Disorders</span></div><h1>Paraneoplastic Syndromes</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-merkel" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Disorders</span></div><h1>Merkel Cell Carcinoma</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-recombinant-blood" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Research Considerations</span></div><h1>Considerations Regarding the Application of Recombinant DNA Technology in Blood Cancer Treatment</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-ai-melanoma" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Research Considerations</span></div><h1>Considerations Using AI in Treating Melanomas and Sarcomas</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-lymphatic-cancer" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Research Considerations</span></div><h1>Treatment Considerations for Cancers Developing Through the Lymphatic System</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-gene-therapy-cancer" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Treatments</span></div><h1>Rewriting the Code: How Gene Therapy is Transforming Cancer Treatment</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-cart" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Treatments</span></div><h1>CAR-T Cell Therapy in Pediatric Acute Lymphoblastic Leukemia: A Breakthrough in Precision Oncology</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-liquid-biopsy" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Treatments</span></div><h1>Liquid Biopsies in Oncology: Redefining the Future of Cancer Care</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-oncolytic" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Treatments</span></div><h1>Oncolytic Viruses — Using Viruses to Fight Cancer</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-pd1" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Treatments</span></div><h1>The Role of PD-1 Checkpoint Inhibitors in Classical Hodgkin Lymphoma Treatment</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-recombinant-all" class="page"><div class="back-bar"><a onclick="goTo('oncology')">← Back to Oncology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Oncology</span><span class="tag-sub">Treatments</span></div><h1>Recombinant DNA Technology in the Treatment of Acute Lymphoblastic Leukemia</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+
+<!-- PATHOLOGY ARTICLES -->
+<div id="page-art-ai-neuro-path" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">AI Advancements</span></div><h1>Artificial Intelligence in Neurodegenerative Disease Pathology</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-ai-cardio-path" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">AI Advancements</span></div><h1>The Role of Emerging AI Technologies in Improving Cardiological Pathology</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-ai-biomarkers" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">AI Advancements</span></div><h1>AI Advancements in Identifying Pathophysiological Biomarkers</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-liver" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Cellular Pathology</span></div><h1>Pathological Features of Liver Diseases</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-renal" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Cellular Pathology</span></div><h1>Pathology of Renal Cell Carcinoma and Cancers Involving TFEB or TFE3 Gene Translocations</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-neuro-path-insights" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Cellular Pathology</span></div><h1>Pathological Insights into the Etiology of Neurodegenerative Diseases</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-histopath-melanoma" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Histopathology</span></div><h1>The Expanding Role of Histopathology in Melanoma: Diagnostic Advances and Emerging Techniques</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-inflammatory" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Pathophysiology</span></div><h1>Understanding the Pathophysiology of Inflammatory Diseases</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-ebola" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Pathophysiology</span></div><h1>Pathophysiology of Ebola Virus Disease</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-chikungunya" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Pathophysiology</span></div><h1>Pathophysiology of Chikungunya Fever: A Rare Mosquito-Borne Tropical Disease</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-cardio-path-methods" class="page"><div class="back-bar"><a onclick="goTo('pathology')">← Back to Pathology</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Pathology</span><span class="tag-sub">Pathophysiology</span></div><h1>Recent Pathophysiological Research Methodologies in Cardiovascular Sciences</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+
+<!-- PAEDIATRICS ARTICLES -->
+<div id="page-art-asthma" class="page"><div class="back-bar"><a onclick="goTo('paediatrics')">← Back to Paediatrics</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Paediatrics</span></div><h1>Childhood Asthma</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-fpies" class="page"><div class="back-bar"><a onclick="goTo('paediatrics')">← Back to Paediatrics</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Paediatrics</span></div><h1>Food Protein-Induced Enterocolitis Syndrome</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-ai-allergy" class="page"><div class="back-bar"><a onclick="goTo('paediatrics')">← Back to Paediatrics</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Paediatrics</span></div><h1>Artificial Intelligence: Revolutionising Today's Paediatric Allergy Care</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-duchenne" class="page"><div class="back-bar"><a onclick="goTo('paediatrics')">← Back to Paediatrics</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Paediatrics</span></div><h1>Duchenne Muscular Dystrophy</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-neuromuscular" class="page"><div class="back-bar"><a onclick="goTo('paediatrics')">← Back to Paediatrics</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">Paediatrics</span></div><h1>Treating Neuromuscular Disorders in Children</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+
+<!-- EU POLICY & PARTNERSHIP ARTICLES -->
+<div id="page-art-ehds" class="page"><div class="back-bar"><a onclick="goTo('eu-policy')">← Back to EU Policy</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">EU Policy</span></div><h1>Response to European Health Data Space Operations</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-eu-papers" class="page"><div class="back-bar"><a onclick="goTo('eu-policy')">← Back to EU Policy</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">EU Policy</span></div><h1>European Union Public Health Policy Papers</h1></div></div><main><div class="info-card"><h3>Policy Papers</h3><p>Paste your EU public health policy paper collection here.</p></div></main></div>
+<div id="page-art-beyond-helix" class="page"><div class="back-bar"><a onclick="goTo('mediquills')">← Back to MediQuills</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">MediQuills</span></div><h1>Beyond the Helix: Science Meets Stories</h1><div class="article-byline">By <strong>[Author Name]</strong> · [Month Year]</div></div></div><main><article class="article-body"><p class="placeholder-note">Paste your article content here.</p></article></main></div>
+<div id="page-art-kindle-oncology" class="page"><div class="back-bar"><a onclick="goTo('mediquills')">← Back to MediQuills</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">MediQuills</span></div><h1>Kindle-Published Oncology Children's Stories</h1></div></div><main><div class="info-card"><h3>Children's Stories</h3><p>Paste information about your Kindle-published oncology children's stories here, including links and descriptions.</p></div></main></div>
+<div id="page-art-startowrite-articles" class="page"><div class="back-bar"><a onclick="goTo('startowrite')">← Back to StartOWrite</a></div><div class="page-hero" style="padding-top:60px"><div class="page-hero-inner"><div class="article-meta-tags"><span class="tag-dept">StartOWrite</span></div><h1>StartOWrite Articles</h1></div></div><main><div class="info-card"><h3>Articles</h3><p>Paste your StartOWrite articles collection here.</p></div></main></div>
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
@@ -1200,38 +910,77 @@
         <div class="footer-brand">Revitalised <span>Medicine</span></div>
         <p class="footer-tagline">A student-led organisation spreading STEM knowledge in healthcare through publications, chapters, and advocacy.</p>
       </div>
-
       <div class="footer-col">
         <div class="footer-col-title">Departments</div>
         <ul>
-          <li><a href="/neurology.html">Neurology</a></li>
-          <li><a href="/oncology.html">Oncology</a></li>
-          <li><a href="/cardiology.html">Cardiology</a></li>
-          <li><a href="/pathology.html">Pathology</a></li>
-          <li><a href="/paediatrics.html">Paediatrics</a></li>
-          <li><a href="/departments.html">All departments →</a></li>
+          <li><a onclick="goTo('neurology')">Neurology</a></li>
+          <li><a onclick="goTo('oncology')">Oncology</a></li>
+          <li><a onclick="goTo('cardiology')">Cardiology</a></li>
+          <li><a onclick="goTo('pathology')">Pathology</a></li>
+          <li><a onclick="goTo('paediatrics')">Paediatrics</a></li>
         </ul>
       </div>
-
       <div class="footer-col">
         <div class="footer-col-title">Organisation</div>
         <ul>
-          <li><a href="/our-executive-team.html">Executive Team</a></li>
-          <li><a href="/chapters.html">Chapters</a></li>
-          <li><a href="/partnerships.html">Partnerships</a></li>
-          <li><a href="/european-union-policy-initiative.html">EU Policy Initiative</a></li>
+          <li><a onclick="goTo('team')">Executive Team</a></li>
+          <li><a onclick="goTo('chapters')">Chapters</a></li>
+          <li><a onclick="goTo('partnerships')">Partnerships</a></li>
+          <li><a onclick="goTo('eu-policy')">EU Policy Initiative</a></li>
         </ul>
       </div>
-
       <div class="footer-col">
         <div class="footer-col-title">Apply</div>
         <ul>
           <li><a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank">Staff Application</a></li>
           <li><a href="https://forms.gle/hWAnJZuksvyrrLEc9" target="_blank">Chapter Application</a></li>
-          <li><a href="/how-to-start-a-chapter.html">Start a Chapter</a></li>
+          <li><a onclick="goTo('how-to-start')">Start a Chapter</a></li>
         </ul>
       </div>
     </div>
-
     <div class="footer-bottom">
-      <span>© 2026 Revital
+      <span>© 2026 Revitalised Medicine. All rights reserved.</span>
+      <span>+1-424-360-4732 · revitalisedmedicineorg@gmail.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Router ──────────────────────────────────────────────────────────────
+  const history_stack = [];
+
+  function goTo(id) {
+    // hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + id);
+    if (target) {
+      target.classList.add('active');
+      history_stack.push(id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // update browser URL hash for bookmarking
+      window.location.hash = id;
+    }
+  }
+
+  // handle hash on load
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#','');
+    if (hash) {
+      goTo(hash);
+    } else {
+      goTo('home');
+    }
+  });
+
+  // handle back/forward
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#','');
+    if (hash) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById('page-' + hash);
+      if (target) { target.classList.add('active'); window.scrollTo({ top: 0 }); }
+    }
+  });
+</script>
+</body>
+</html>
