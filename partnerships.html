@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Partnerships — Revitalised Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #2d1f4e; --accent: #8b5cf6; --lilac: #c4b5fd;
+  --light: #f5f3ff; --white: #ffffff; --text: #2d1f4e;
+  --muted: #7c6fa0; --border: rgba(139,92,246,0.15);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+body { font-family: var(--sans); background: var(--white); color: var(--text); }
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(45,31,78,0.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(139,92,246,0.2);
+  padding: 0 2.5rem; display: flex; align-items: center;
+  justify-content: space-between; height: 64px;
+}
+.nav-logo { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: #fff; text-decoration: none; }
+.nav-logo span { color: var(--lilac); }
+.nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; }
+.nav-links > li > a, .nav-links > li > button {
+  font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(255,255,255,0.75); text-decoration: none; padding: 0.5rem 0.75rem;
+  border: none; background: none; cursor: pointer; border-radius: 4px;
+  transition: color 0.2s, background 0.2s; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;
+}
+.nav-links > li > a:hover, .nav-links > li > button:hover { color: #fff; background: rgba(139,92,246,0.15); }
+.nav-links > li { position: relative; }
+.nav-links > li > button svg { width: 10px; height: 10px; transition: transform 0.2s; opacity: 0.6; }
+.nav-links > li:hover > button svg { transform: rotate(180deg); }
+.dropdown {
+  position: absolute; top: calc(100% + 8px); left: 0;
+  background: var(--navy); border: 1px solid rgba(139,92,246,0.25); border-radius: 8px;
+  min-width: 220px; padding: 0.5rem 0; opacity: 0; visibility: hidden;
+  transform: translateY(-6px); transition: all 0.2s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.nav-links > li:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+.dropdown a { display: block; padding: 0.55rem 1.2rem; font-size: 0.8rem; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.15s, background 0.15s; }
+.dropdown a:hover { color: #fff; background: rgba(139,92,246,0.12); }
+.dropdown .dropdown-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lilac); padding: 0.75rem 1.2rem 0.3rem; font-weight: 600; }
+.nav-cta { background: #a78bfa !important; color: #fff !important; border-radius: 6px; font-weight: 600 !important; padding: 0.45rem 1rem !important; }
+.nav-cta:hover { background: #c4b5fd !important; color: var(--navy) !important; }
+.page-hero {
+  background: var(--navy); padding: 110px 2.5rem 55px; position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(139,92,246,0.15) 0%, transparent 60%);
+}
+.page-hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+.breadcrumb { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+.breadcrumb a { color: var(--lilac); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.hero-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.page-hero h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; color: #fff; margin-bottom: 0.75rem; line-height: 1.1; }
+.page-hero p { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 560px; line-height: 1.7; }
+.section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+.section-label::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
+main { max-width: 1100px; margin: 0 auto; padding: 4rem 2.5rem 6rem; }
+.subcategory { margin-bottom: 3.5rem; }
+.subcategory-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--light); }
+.subcategory-header h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: var(--navy); }
+.subcategory-tag { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; background: var(--light); color: var(--accent); padding: 0.3rem 0.7rem; border-radius: 20px; }
+.article-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+.article-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.5rem; text-decoration: none; display: block;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; position: relative;
+}
+.article-card:hover { border-color: rgba(139,92,246,0.35); box-shadow: 0 8px 32px rgba(139,92,246,0.1); transform: translateY(-3px); }
+.article-card-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+.article-card h3 { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 0.4rem; }
+.article-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+.article-card-arrow { position: absolute; bottom: 1rem; right: 1rem; color: var(--accent); opacity: 0; transition: opacity 0.2s, transform 0.2s; font-size: 1.1rem; }
+.article-card:hover .article-card-arrow { opacity: 1; transform: translateX(3px); }
+.prose-section { max-width: 760px; }
+.prose-section p { font-size: 1rem; line-height: 1.8; color: #3d3060; margin-bottom: 1.2rem; }
+.prose-section h2 { font-family: var(--serif); font-size: 1.7rem; font-weight: 400; color: var(--navy); margin: 2rem 0 0.75rem; }
+.prose-section h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin: 1.5rem 0 0.5rem; }
+.prose-section ul, .prose-section ol { padding-left: 1.5rem; margin-bottom: 1.2rem; }
+.prose-section li { font-size: 1rem; line-height: 1.7; color: #3d3060; margin-bottom: 0.35rem; }
+.prose-section ul li::marker { color: var(--accent); }
+.info-card { background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+.info-card h3 { font-family: var(--serif); font-size: 1.3rem; color: var(--navy); margin-bottom: 0.75rem; }
+.info-card p { font-size: 0.95rem; color: #3d3060; line-height: 1.75; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; margin-top: 2rem; }
+.team-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
+.team-card-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin-bottom: 0.25rem; }
+.team-card-role { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+.team-card-bio { font-size: 0.88rem; color: #3d3060; line-height: 1.7; }
+.partner-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+.partner-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; text-decoration: none; display: block; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+.partner-card:hover { border-color: rgba(139,92,246,0.35); box-shadow: 0 8px 32px rgba(139,92,246,0.1); transform: translateY(-3px); }
+.partner-card-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+.partner-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.apply-strip { background: var(--navy); border-radius: 12px; padding: 2rem; margin-top: 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.apply-strip p { font-family: var(--serif); font-size: 1.3rem; color: #fff; }
+.btn-lilac { background: #a78bfa; color: #fff; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; padding: 0.8rem 1.8rem; border-radius: 6px; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+.btn-lilac:hover { background: #c4b5fd; color: var(--navy); }
+footer { background: var(--navy); padding: 3rem 2.5rem; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: var(--serif); font-size: 1.1rem; color: #fff; }
+.footer-brand span { color: var(--lilac); }
+.footer-links { display: flex; gap: 1.5rem; list-style: none; }
+.footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: #fff; }
+.footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.25); width: 100%; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; }
+@media (max-width: 700px) {
+  .page-hero { padding: 95px 1.25rem 40px; }
+  main { padding: 2.5rem 1.25rem 4rem; }
+  .article-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .partner-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/index.html" class="nav-logo">Revitalised <span>Medicine</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Home</a></li>
+    <li><button>Departments <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+      <div class="dropdown"><div class="dropdown-label">Medical Fields</div>
+        <a href="/anatomy.html">Anatomy</a>
+        <a href="/biotechnology-and-bioinformatics.html">Biotechnology &amp; Bioinformatics</a>
+        <a href="/cardiology.html">Cardiology</a>
+        <a href="/endocrinology.html">Endocrinology</a>
+        <a href="/genetics.html">Genetics</a>
+        <a href="/gynaecology--obstetrics.html">Gynaecology &amp; Obstetrics</a>
+        <a href="/health-advocacy.html">Health Advocacy</a>
+        <a href="/neurology.html">Neurology</a>
+        <a href="/oncology.html">Oncology</a>
+        <a href="/pathology.html">Pathology</a>
+        <a href="/paediatrics.html">Paediatrics</a>
+        <a href="/surgery.html">Surgery</a>
+      </div></li>
+    <li><button>Chapters <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+      <div class="dropdown">
+        <a href="/chapters.html">About Chapters</a>
+        <a href="/how-to-start-a-chapter.html">How to Start a Chapter</a>
+        <a href="/organise-chapter-initiatives.html">Organise Initiatives</a>
+      </div></li>
+    <li><button>Partnerships <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+      <div class="dropdown">
+        <a href="/startowrite.html">StartOWrite</a>
+        <a href="/mediquills.html">MediQuills</a>
+        <a href="/the-stemist-society.html">The STEMIST Society</a>
+        <a href="/project-trauma.html">Project T.R.A.U.M.A</a>
+        <a href="/curequest.html">CureQuest</a>
+      </div></li>
+    <li><a href="/european-union-policy-initiative.html">EU Policy</a></li>
+    <li><a href="/our-executive-team.html">Our Team</a></li>
+    <li><a href="https://forms.gle/BAAKLnSWpy6NkhGeA" class="nav-cta" target="_blank">Apply Now</a></li>
+  </ul>
+</nav>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="/index.html">Home</a> → Partnerships</div>
+    <div class="hero-icon">🤝</div>
+    <h1>Partnerships</h1>
+    <p>Our network of allied organisations advancing medical education and health advocacy.</p>
+  </div>
+</div>
+<main>
+  <div class="section-label">Our Partners</div>
+  <div class="partner-grid">
+    <a href="/startowrite.html" class="partner-card">
+      <div class="partner-card-name">StartOWrite</div>
+      <p class="partner-card-desc">A writing initiative supporting student medical authors in developing and publishing high-quality healthcare content.</p>
+    </a>
+    <a href="/mediquills.html" class="partner-card">
+      <div class="partner-card-name">MediQuills</div>
+      <p class="partner-card-desc">Where science meets stories — oncology children's books, policy papers, and creative medical writing.</p>
+    </a>
+    <a href="/the-stemist-society.html" class="partner-card">
+      <div class="partner-card-name">The STEMIST Society</div>
+      <p class="partner-card-desc">A student society dedicated to broadening STEM access and fostering the next generation of scientists and healthcare professionals.</p>
+    </a>
+    <a href="/project-trauma.html" class="partner-card">
+      <div class="partner-card-name">Project T.R.A.U.M.A</div>
+      <p class="partner-card-desc">A project focused on trauma-informed approaches to healthcare education and community support.</p>
+    </a>
+    <a href="/curequest.html" class="partner-card">
+      <div class="partner-card-name">CureQuest</div>
+      <p class="partner-card-desc">An initiative driving student-led research into cures and treatments for rare and neglected diseases.</p>
+    </a>
+  </div>
+</main>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Revitalised <span>Medicine</span></div>
+    <ul class="footer-links">
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/our-executive-team.html">Our Team</a></li>
+      <li><a href="/chapters.html">Chapters</a></li>
+      <li><a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank">Apply</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 Revitalised Medicine. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>
