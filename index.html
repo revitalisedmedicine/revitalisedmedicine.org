@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Revitalised Medicine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #2d1f4e;
+      --deep: #3b2860;
+      --mid: #5a3e8a;
+      --accent: #8b5cf6;
+      --teal: #c4b5fd;
+      --light: #f5f3ff;
+      --white: #ffffff;
+      --text: #2d1f4e;
+      --muted: #7c6fa0;
+      --border: rgba(139, 92, 246, 0.15);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10, 22, 40, 0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(58,123,213,0.2);
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-logo span {
+      color: var(--teal);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      list-style: none;
+    }
+
+    .nav-links > li {
+      position: relative;
+    }
+
+    .nav-links > li > a,
+    .nav-links > li > button {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .nav-links > li > a:hover,
+    .nav-links > li > button:hover,
+    .nav-links > li.active > a {
+      color: var(--white);
+      background: rgba(58,123,213,0.15);
+    }
+
+    .nav-links > li > button svg {
+      width: 10px; height: 10px;
+      transition: transform 0.2s;
+      opacity: 0.6;
+    }
+
+    .nav-links > li:hover > button svg {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: var(--navy);
+      border: 1px solid rgba(58,123,213,0.25);
+      border-radius: 8px;
+      min-width: 220px;
+      padding: 0.5rem 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: all 0.2s ease;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .nav-links > li:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+
+    .dropdown a:hover {
+      color: var(--white);
+      background: rgba(58,123,213,0.12);
+    }
+
+    .dropdown .dropdown-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      padding: 0.75rem 1.2rem 0.3rem;
+      font-weight: 600;
+    }
+
+    .dropdown .divider {
+      height: 1px;
+      background: rgba(58,123,213,0.15);
+      margin: 0.4rem 0;
+    }
+
+    .nav-cta {
+      background: #a78bfa !important;
+      color: #fff !important;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      padding: 0.45rem 1rem !important;
+    }
+
+    .nav-cta:hover {
+      background: #c4b5fd !important;
+      color: var(--navy) !important;
+    }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      width: 24px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 100px 2.5rem 60px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(139,92,246,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(196,181,253,0.1) 0%, transparent 50%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.07) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--teal);
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.35s forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--teal);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.65);
+      max-width: 580px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.65s forwards;
+    }
+
+    .btn-primary {
+      background: #a78bfa;
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: #c4b5fd;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 2rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .hero-stat-row {
+      position: absolute;
+      bottom: 3rem;
+      left: 2.5rem;
+      right: 2.5rem;
+      display: flex;
+      gap: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.8s forwards;
+      z-index: 2;
+    }
+
+    .hero-stat {
+      border-left: 2px solid rgba(0,201,177,0.4);
+      padding-left: 1rem;
+    }
+
+    .hero-stat .num {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .hero-stat .label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    /* ── ANNOUNCEMENT BANNER ── */
+    .banner {
+      background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+      padding: 0.9rem 2.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+
+    .banner strong { font-weight: 700; }
+
+    /* ── SECTION COMMON ── */
+    section {
+      padding: 6rem 2.5rem;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 20px; height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      background: var(--light);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    .about-text p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #3d4f6a;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 40px rgba(10,22,40,0.08);
+      border: 1px solid var(--border);
+    }
+
+    .about-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-card-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), #c4b5fd);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-card-icon svg {
+      width: 20px; height: 20px;
+      color: var(--white);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .about-card-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .about-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .about-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: #3d4f6a;
+      line-height: 1.5;
+    }
+
+    .about-list li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    /* ── DEPARTMENTS ── */
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 3rem;
+    }
+
+    .dept-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dept-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #c4b5fd);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .dept-card:hover {
+      border-color: rgba(58,123,213,0.35);
+      box-shadow: 0 8px 32px rgba(58,123,213,0.1);
+      transform: translateY(-3px);
+    }
+
+    .dept-card:hover::before {
+      opacity: 1;
+    }
+
+    .dept-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .dept-name {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .dept-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .dept-arrow {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      font-size: 1.1rem;
+    }
+
+    .dept-card:hover .dept-arrow {
+      opacity: 1;
+      transform: translateX(3px);
+    }
+
+    /* ── APPLY ── */
+    .apply {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .apply::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(196,181,253,0.12) 0%, transparent 60%);
+    }
+
+    .apply-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .apply .section-title {
+      color: var(--white);
+    }
+
+    .apply .section-subtitle {
+      color: rgba(255,255,255,0.55);
+    }
+
+    .apply-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .apply-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 2rem;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      display: block;
+    }
+
+    .apply-card:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(0,201,177,0.3);
+    }
+
+    .apply-card-type {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+
+    .apply-card-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+
+    .apply-card-desc {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .apply-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.04em;
+    }
+
+    .apply-card-link svg {
+      width: 14px; height: 14px;
+      transition: transform 0.2s;
+    }
+
+    .apply-card:hover .apply-card-link svg {
+      transform: translateX(3px);
+    }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: var(--light);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-icon {
+      width: 42px; height: 42px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg {
+      width: 18px; height: 18px;
+      color: var(--accent);
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .contact-value {
+      font-size: 0.95rem;
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    .contact-value a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .contact-value a:hover { text-decoration: underline; }
+
+    .social-section-title {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .social-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .social-box:hover {
+      border-color: rgba(58,123,213,0.35);
+      box-shadow: 0 4px 20px rgba(58,123,213,0.08);
+    }
+
+    .social-box-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .social-box-icon svg {
+      width: 22px; height: 22px;
+      color: white;
+      fill: currentColor;
+    }
+
+    .social-box-handle {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .social-box-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 4rem 2.5rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--white);
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand span { color: var(--teal); }
+
+    .footer-tagline {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+      max-width: 260px;
+    }
+
+    .footer-col-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-col ul li a:hover { color: var(--white); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .about-grid,
+      .apply-cards,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      .hero-stat-row {
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 560px) {
+      nav { padding: 0 1.25rem; }
+      section { padding: 4rem 1.25rem; }
+      .hero { padding: 90px 1.25rem 80px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .hero-stat-row { position: relative; bottom: auto; left: auto; right: auto; margin-top: 3rem; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <a href="/" class="nav-logo">Revitalised <span>Medicine</span></a>
+
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+
+    <li>
+      <button>Departments
+        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+      </button>
+      <div class="dropdown">
+        <div class="dropdown-label">Medical Fields</div>
+        <a href="/anatomy.html">Anatomy</a>
+        <a href="/biotechnology-and-bioinformatics.html">Biotechnology &amp; Bioinformatics</a>
+        <a href="/cardiology.html">Cardiology</a>
+        <a href="/endocrinology.html">Endocrinology</a>
+        <a href="/genetics.html">Genetics</a>
+        <a href="/gynaecology--obstetrics.html">Gynaecology &amp; Obstetrics</a>
+        <a href="/health-advocacy.html">Health Advocacy</a>
+        <a href="/neurology.html">Neurology</a>
+        <a href="/oncology.html">Oncology</a>
+        <a href="/pathology.html">Pathology</a>
+        <a href="/paediatrics.html">Paediatrics</a>
+        <a href="/surgery.html">Surgery</a>
+      </div>
+    </li>
+
+    <li>
+      <button>Chapters
+        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+      </button>
+      <div class="dropdown">
+        <a href="/chapters.html">About Chapters</a>
+        <a href="/how-to-start-a-chapter.html">How to Start a Chapter</a>
+        <a href="/organise-chapter-initiatives.html">Organise Initiatives</a>
+      </div>
+    </li>
+
+    <li>
+      <button>Partnerships
+        <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+      </button>
+      <div class="dropdown">
+        <a href="/startowrite.html">StartOWrite</a>
+        <a href="/mediquills.html">MediQuills</a>
+        <a href="/the-stemist-society.html">The STEMIST Society</a>
+        <a href="/project-trauma.html">Project T.R.A.U.M.A</a>
+        <a href="/curequest.html">CureQuest</a>
+      </div>
+    </li>
+
+    <li><a href="/european-union-policy-initiative.html">EU Policy</a></li>
+    <li><a href="/our-executive-team.html">Our Team</a></li>
+    <li><a href="https://forms.gle/BAAKLnSWpy6NkhGeA" class="nav-cta" target="_blank">Apply Now</a></li>
+  </ul>
+
+  <div class="hamburger" onclick="this.parentElement.querySelector('.nav-links').style.display='flex'">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── BANNER ── -->
+<div class="banner">
+  🎉 <strong>Staff applications are now open!</strong> &nbsp;Join our growing team and help shape the future of medical education.
+  &nbsp;<a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" style="color:#fff;font-weight:700;text-decoration:underline;">Apply here →</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Student-led medical education</div>
+    <h1>Your gateway to <em>insightful</em> medical knowledge</h1>
+    <p class="hero-desc">
+      Revitalised Medicine is a student-run organisation spreading STEM knowledge in healthcare through accessible publications, chapters, and advocacy — from oncology to neurology and beyond.
+    </p>
+    <div class="hero-actions">
+      <a href="/departments.html" class="btn-primary">Explore Departments</a>
+      <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" class="btn-outline">Join the Team</a>
+    </div>
+  </div>
+
+  <div class="hero-stat-row">
+    <div class="hero-stat">
+      <div class="num">93,000+</div>
+      <div class="label">Reached via international media</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">12</div>
+      <div class="label">Medical departments</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">2026</div>
+      <div class="label">Pushing further impact</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section class="about">
+  <div class="section-inner">
+    <div class="section-label">About us</div>
+    <h2 class="section-title">Galvanising a student<br>community for medicine</h2>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          Welcome to Revitalised Medicine — your gateway to insightful medical articles, resources, and initiatives. We explore content related to recent medical research and informative publications across healthcare, including oncology, biotechnology, and genetics.
+        </p>
+        <p>
+          Our organisation aims to spread STEM-related knowledge about healthcare by galvanising a student community filled with passionate prospective medical providers. In 2025, we reached over 93,000 people through international media.
+        </p>
+        <p>
+          In the long term, we strive for revolutionary change throughout all communities, emphasising the importance of medical education accessibility and healthcare advocacy. Let's keep pushing to make an even bigger impact in 2026!
+        </p>
+      </div>
+
+      <div class="about-visual">
+        <div class="about-card">
+          <div class="about-card-header">
+            <div class="about-card-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div class="about-card-title">What we do</div>
+          </div>
+          <ul class="about-list">
+            <li>Publish peer-reviewed medical articles across 12+ specialties</li>
+            <li>Support student chapters at schools and community centres</li>
+            <li>Advocate for equitable healthcare access globally</li>
+            <li>Partner with organisations like MediQuills &amp; CureQuest</li>
+            <li>Contribute EU health policy papers and position statements</li>
+            <li>Run webinars, diagnostics content, and a neurology library</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEPARTMENTS ── -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Explore</div>
+    <h2 class="section-title">Our departments</h2>
+    <p class="section-subtitle">Dive into curated, student-authored content across a wide range of medical disciplines.</p>
+
+    <div class="dept-grid">
+      <a href="/anatomy.html" class="dept-card">
+        <div class="dept-icon">🫁</div>
+        <div class="dept-name">Anatomy</div>
+        <div class="dept-desc">The gut-brain axis, the interstitium, and more forgotten frontiers.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/biotechnology-and-bioinformatics.html" class="dept-card">
+        <div class="dept-icon">🧬</div>
+        <div class="dept-name">Biotechnology &amp; Bioinformatics</div>
+        <div class="dept-desc">Genetic testing debates and the data science of life.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/cardiology.html" class="dept-card">
+        <div class="dept-icon">❤️</div>
+        <div class="dept-name">Cardiology</div>
+        <div class="dept-desc">AI advancements, rare disorders, and cutting-edge treatments.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/endocrinology.html" class="dept-card">
+        <div class="dept-icon">⚗️</div>
+        <div class="dept-name">Endocrinology</div>
+        <div class="dept-desc">Hormones, metabolic pathways, and systemic disease.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/neurology.html" class="dept-card">
+        <div class="dept-icon">🧠</div>
+        <div class="dept-name">Neurology</div>
+        <div class="dept-desc">MS, Huntington's, CNS breakthroughs, AI treatments &amp; a research library.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/oncology.html" class="dept-card">
+        <div class="dept-icon">🔬</div>
+        <div class="dept-name">Oncology</div>
+        <div class="dept-desc">CAR-T therapy, gene editing, liquid biopsies, and lymphoma research.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/pathology.html" class="dept-card">
+        <div class="dept-icon">🧫</div>
+        <div class="dept-name">Pathology</div>
+        <div class="dept-desc">AI in pathology, histopathology advances, and cellular disease.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/paediatrics.html" class="dept-card">
+        <div class="dept-icon">👶</div>
+        <div class="dept-name">Paediatrics</div>
+        <div class="dept-desc">Childhood asthma, Duchenne MD, neuromuscular disorders in children.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/health-advocacy.html" class="dept-card">
+        <div class="dept-icon">🌍</div>
+        <div class="dept-name">Health Advocacy</div>
+        <div class="dept-desc">Equitable access, marginalised communities, and global policy.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/genetics.html" class="dept-card">
+        <div class="dept-icon">🧪</div>
+        <div class="dept-name">Genetics</div>
+        <div class="dept-desc">Hereditary disease, molecular biology, and genomic medicine.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/gynaecology--obstetrics.html" class="dept-card">
+        <div class="dept-icon">🩺</div>
+        <div class="dept-name">Gynaecology &amp; Obstetrics</div>
+        <div class="dept-desc">Women's health, reproductive medicine, and maternal care.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+      <a href="/surgery.html" class="dept-card">
+        <div class="dept-icon">🔪</div>
+        <div class="dept-name">Surgery</div>
+        <div class="dept-desc">Surgical techniques, innovations, and perioperative care.</div>
+        <div class="dept-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── APPLY ── -->
+<section class="apply">
+  <div class="section-inner apply-inner">
+    <div class="section-label" style="color:var(--teal)">Get involved</div>
+    <h2 class="section-title">Join Revitalised Medicine</h2>
+    <p class="section-subtitle">Applications are reviewed on a rolling basis. We welcome students at all levels who are passionate about medical education and healthcare advocacy.</p>
+
+    <div class="apply-cards">
+      <a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank" class="apply-card">
+        <div class="apply-card-type">Staff Application</div>
+        <div class="apply-card-title">Join our organisational team</div>
+        <div class="apply-card-desc">Become a writer, editor, researcher, or department lead. Help produce content and build our community of medical students worldwide.</div>
+        <div class="apply-card-link">
+          Fill out staff application
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+        </div>
+      </a>
+
+      <a href="https://forms.gle/hWAnJZuksvyrrLEc9" target="_blank" class="apply-card">
+        <div class="apply-card-type">Chapter Application</div>
+        <div class="apply-card-title">Start a local chapter</div>
+        <div class="apply-card-desc">Bring Revitalised Medicine to your school, university, or community centre. Launch initiatives, host events, and grow the network locally.</div>
+        <div class="apply-card-link">
+          Fill out chapter application
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact">
+  <div class="section-inner">
+    <div class="section-label">Get in touch</div>
+    <h2 class="section-title">Contact &amp; social</h2>
+
+    <div class="contact-grid">
+      <div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">+1-424-360-4732</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value"><a href="mailto:revitalisedmedicineorg@gmail.com">revitalisedmedicineorg@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="social-section-title">Follow us</div>
+        <a href="https://instagram.com/revitalised_medicine" target="_blank" class="social-box">
+          <div class="social-box-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <div>
+            <div class="social-box-handle">@revitalised_medicine</div>
+            <div class="social-box-sub">Follow us on Instagram</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Revitalised <span>Medicine</span></div>
+        <p class="footer-tagline">A student-led organisation spreading STEM knowledge in healthcare through publications, chapters, and advocacy.</p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Departments</div>
+        <ul>
+          <li><a href="/neurology.html">Neurology</a></li>
+          <li><a href="/oncology.html">Oncology</a></li>
+          <li><a href="/cardiology.html">Cardiology</a></li>
+          <li><a href="/pathology.html">Pathology</a></li>
+          <li><a href="/paediatrics.html">Paediatrics</a></li>
+          <li><a href="/departments.html">All departments →</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Organisation</div>
+        <ul>
+          <li><a href="/our-executive-team.html">Executive Team</a></li>
+          <li><a href="/chapters.html">Chapters</a></li>
+          <li><a href="/partnerships.html">Partnerships</a></li>
+          <li><a href="/european-union-policy-initiative.html">EU Policy Initiative</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Apply</div>
+        <ul>
+          <li><a href="https://forms.gle/BAAKLnSWpy6NkhGeA" target="_blank">Staff Application</a></li>
+          <li><a href="https://forms.gle/hWAnJZuksvyrrLEc9" target="_blank">Chapter Application</a></li>
+          <li><a href="/how-to-start-a-chapter.html">Start a Chapter</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Revitalised Medicine. All rights reserved.</span>
+      <span>+1-424-360-4732 · revitalisedmedicineorg@gmail.com</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
